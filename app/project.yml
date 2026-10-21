@@ -1,0 +1,44 @@
+name: jiachang
+options:
+  bundleIdPrefix: io.github.BrookZeng2023
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+targets:
+  jiachang:
+    type: application
+    platform: iOS
+    sources:
+      - path: jiachang
+    info:
+      path: jiachang/Info.plist
+      properties:
+        CFBundleDisplayName: 家常
+        CFBundleShortVersionString: "0.3.0"
+        CFBundleLocalizations: [zh-Hans, en]
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+          UIImageName: LaunchMark
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        ITSAppUsesNonExemptEncryption: false
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        NSCameraUsageDescription: 拍摄菜品照片
+        NSPhotoLibraryAddUsageDescription: 保存菜品照片到相册
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_STYLE: Automatic
+  jiachangTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: jiachangTests
+    dependencies:
+      - target: jiachang
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES

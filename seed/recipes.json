@@ -1,0 +1,162 @@
+[
+  {
+    "key": "tomato-eggs",
+    "name": "番茄炒蛋 · Tomato and Egg Stir-fry",
+    "description": "酸甜鲜嫩，十分钟就能上桌 · Sweet, savoury and ready in ten minutes",
+    "servings": 2,
+    "total_minutes": 15,
+    "ingredients": ["番茄 3 个 · 3 tomatoes", "鸡蛋 4 个 · 4 eggs", "小葱 2 根 · 2 spring onions", "番茄酱 1 茶匙 · 1 tsp tomato purée", "糖 1 茶匙 · 1 tsp sugar", "盐和食用油 · Salt and cooking oil"],
+    "steps": ["番茄切块，小葱切碎，鸡蛋加一撮盐打散 · Cut the tomatoes, slice the spring onions and beat the eggs with a pinch of salt", "热锅加油，把鸡蛋炒至刚凝固后盛出 · Scramble the eggs in a hot oiled wok until just set, then remove", "原锅炒番茄、番茄酱和糖，煮至出汁 · Cook the tomatoes with tomato purée and sugar until saucy", "鸡蛋回锅轻轻拌匀，撒小葱即可 · Fold the eggs back in and finish with spring onions"],
+    "image_prompt": "Chinese tomato and egg stir-fry, glossy soft scrambled eggs and chunky red tomatoes, spring onion garnish"
+  },
+  {
+    "key": "pepper-potato",
+    "name": "青椒土豆丝 · Stir-fried Potato with Peppers",
+    "description": "清脆爽口的家常快炒 · A crisp, bright everyday stir-fry",
+    "servings": 2,
+    "total_minutes": 20,
+    "ingredients": ["大土豆 2 个 · 2 large potatoes", "青椒 1 个 · 1 green pepper", "蒜 2 瓣 · 2 garlic cloves", "米醋 1 汤匙 · 1 tbsp rice vinegar", "盐 1/2 茶匙 · 1/2 tsp salt", "食用油 1 汤匙 · 1 tbsp cooking oil"],
+    "steps": ["土豆切细丝，用冷水冲洗掉表面淀粉 · Julienne the potatoes and rinse away the surface starch in cold water", "青椒切丝，蒜切片 · Slice the green pepper and garlic", "大火热油爆香蒜片，下土豆丝翻炒 2 分钟 · Fry the garlic in hot oil, then stir-fry the potato for 2 minutes", "加入青椒、米醋和盐，再炒 1 分钟保持爽脆 · Add pepper, vinegar and salt; cook for 1 minute so it stays crisp"],
+    "image_prompt": "Chinese stir-fried julienned potato with green peppers, crisp pale potato strands, light glossy wok finish"
+  },
+  {
+    "key": "soy-chicken",
+    "name": "红烧鸡腿 · Soy-braised Chicken Thighs",
+    "description": "酱香浓郁，配米饭最合适 · Rich soy-braised chicken made for rice",
+    "servings": 4,
+    "total_minutes": 50,
+    "ingredients": ["带骨鸡腿 6 个 · 6 bone-in chicken thighs", "生抽 3 汤匙 · 3 tbsp light soy sauce", "老抽 1 汤匙 · 1 tbsp dark soy sauce", "姜 5 片 · 5 slices ginger", "八角 2 个 · 2 star anise", "冰糖 20 克 · 20 g rock sugar"],
+    "steps": ["鸡腿擦干，在锅中两面煎至金黄 · Pat the chicken dry and brown it well on both sides", "加入姜、八角和冰糖，小火炒香 · Add ginger, star anise and rock sugar; cook gently until fragrant", "倒入两种酱油和足量热水，盖盖小火炖 30 分钟 · Add both soy sauces and enough hot water; cover and simmer for 30 minutes", "开盖收汁，直到酱汁浓亮地裹住鸡腿 · Uncover and reduce until the sauce is glossy and coats the chicken"],
+    "image_prompt": "Chinese soy-braised chicken thighs, deep mahogany glossy sauce, ginger and star anise, served in a ceramic bowl"
+  },
+  {
+    "key": "mapo-tofu",
+    "name": "麻婆豆腐 · Mapo Tofu",
+    "description": "麻辣下饭，可按口味减辣 · Silky, savoury and as spicy as you like",
+    "servings": 3,
+    "total_minutes": 25,
+    "ingredients": ["嫩豆腐 450 克 · 450 g soft tofu", "猪肉末 150 克 · 150 g pork mince", "郫县豆瓣酱 1.5 汤匙 · 1 1/2 tbsp chilli bean paste", "蒜 2 瓣 · 2 garlic cloves", "花椒粉 1/2 茶匙 · 1/2 tsp ground Sichuan pepper", "玉米淀粉 1 茶匙 · 1 tsp cornflour"],
+    "steps": ["豆腐切块，在淡盐热水中浸 5 分钟 · Cube the tofu and soak it in lightly salted hot water for 5 minutes", "炒香肉末、蒜和豆瓣酱 · Fry the pork mince with garlic and chilli bean paste until fragrant", "加 200 毫升水和豆腐，小火煮 8 分钟 · Add 200 ml water and the tofu; simmer gently for 8 minutes", "淋入淀粉水勾薄芡，撒花椒粉和小葱 · Thicken lightly with cornflour slurry and finish with Sichuan pepper and spring onion"],
+    "image_prompt": "authentic mapo tofu, silky tofu cubes and pork mince in vivid red chilli bean sauce, spring onion garnish"
+  },
+  {
+    "key": "scallion-noodles",
+    "name": "葱油拌面 · Spring Onion Oil Noodles",
+    "description": "葱香焦甜，简单却很满足 · Fragrant, caramelised and deeply comforting",
+    "servings": 2,
+    "total_minutes": 25,
+    "ingredients": ["细面 250 克 · 250 g thin wheat noodles", "小葱 8 根 · 8 spring onions", "生抽 2 汤匙 · 2 tbsp light soy sauce", "老抽 1 茶匙 · 1 tsp dark soy sauce", "糖 2 茶匙 · 2 tsp sugar", "食用油 4 汤匙 · 4 tbsp cooking oil"],
+    "steps": ["小葱切长段，葱白和葱绿分开 · Cut the spring onions into lengths, separating whites and greens", "冷油下葱，小火炸至金黄酥脆 · Start the onions in cold oil and cook gently until golden and crisp", "加入酱油和糖，小火煮至融合 · Stir in both soy sauces and sugar; bubble gently", "面条煮熟沥干，拌入葱油并放上脆葱 · Drain the cooked noodles, toss with the oil and top with crisp onions"],
+    "image_prompt": "Shanghai spring onion oil noodles, glossy dark soy noodles twirled in a ceramic bowl, crispy scallions on top"
+  },
+  {
+    "key": "tomato-beef-stew",
+    "name": "番茄炖牛肉 · Tomato Beef Stew",
+    "description": "温暖浓郁，适合英国的冷天 · A rich, warming pot for a cold British day",
+    "servings": 4,
+    "total_minutes": 110,
+    "ingredients": ["炖牛肉块 700 克 · 700 g diced stewing beef", "番茄罐头 400 克 · 400 g tinned tomatoes", "洋葱 1 个 · 1 onion", "胡萝卜 2 根 · 2 carrots", "土豆 2 个 · 2 potatoes", "牛肉高汤 500 毫升 · 500 ml beef stock"],
+    "steps": ["牛肉擦干分批煎至深褐色 · Pat the beef dry and brown it deeply in batches", "炒软洋葱和胡萝卜，加入番茄 · Soften the onion and carrots, then add the tomatoes", "牛肉回锅并加高汤，盖盖小火炖 70 分钟 · Return the beef, add stock, cover and simmer for 70 minutes", "加入土豆再炖 25 分钟，按口味调味 · Add potatoes and cook for 25 minutes more, then season"],
+    "image_prompt": "hearty tomato beef stew with tender beef chunks, potatoes and carrots in a rustic dark ceramic bowl"
+  },
+  {
+    "key": "garlic-broccoli",
+    "name": "蒜蓉西兰花 · Garlic Broccoli",
+    "description": "翠绿爽脆，工作日晚餐的快手配菜 · Bright, crisp and perfect for a weeknight",
+    "servings": 3,
+    "total_minutes": 15,
+    "ingredients": ["西兰花 1 大颗 · 1 large head broccoli", "蒜 4 瓣 · 4 garlic cloves", "蚝油 1 汤匙 · 1 tbsp oyster sauce", "生抽 1 茶匙 · 1 tsp light soy sauce", "水 3 汤匙 · 3 tbsp water", "食用油 1 汤匙 · 1 tbsp cooking oil"],
+    "steps": ["西兰花切小朵，茎去皮切片 · Cut broccoli into florets and peel and slice the stem", "沸水中焯 60 秒，捞出沥干 · Blanch for 60 seconds, then drain well", "热油小火炒香蒜末 · Gently fry the chopped garlic in hot oil", "加入西兰花、蚝油、生抽和水，大火翻炒 2 分钟 · Add broccoli, oyster sauce, soy and water; toss over high heat for 2 minutes"],
+    "image_prompt": "vibrant garlic broccoli stir-fry, glossy emerald florets with golden garlic, clean white ceramic plate"
+  },
+  {
+    "key": "egg-fried-rice",
+    "name": "蛋炒饭 · Egg Fried Rice",
+    "description": "把隔夜饭变成香喷喷的一餐 · Turn yesterday's rice into a brilliant meal",
+    "servings": 2,
+    "total_minutes": 15,
+    "ingredients": ["冷米饭 400 克 · 400 g cold cooked rice", "鸡蛋 3 个 · 3 eggs", "冷冻豌豆 100 克 · 100 g frozen peas", "小葱 3 根 · 3 spring onions", "生抽 1 汤匙 · 1 tbsp light soy sauce", "白胡椒和盐 · White pepper and salt"],
+    "steps": ["用手把冷米饭打散，鸡蛋加盐打匀 · Break up the cold rice and beat the eggs with salt", "热锅加油，快速炒散鸡蛋 · Add oil to a hot wok and quickly scramble the eggs", "加入米饭和豌豆，大火翻炒至粒粒分明 · Add rice and peas; stir-fry over high heat until separate and hot", "加生抽、白胡椒和小葱，翻匀出锅 · Season with soy and white pepper, then fold through spring onions"],
+    "image_prompt": "Chinese egg fried rice with golden egg ribbons, peas and spring onions, individual glossy grains in a dark bowl"
+  },
+  {
+    "key": "cottage-pie",
+    "name": "农舍派 · Cottage Pie",
+    "description": "牛肉蔬菜上盖金黄薯泥的英国经典 · A British classic with savoury beef under golden mash",
+    "servings": 4,
+    "total_minutes": 70,
+    "ingredients": ["牛肉末 500 克 · 500 g beef mince", "土豆 800 克 · 800 g potatoes", "洋葱 1 个 · 1 onion", "胡萝卜 2 根 · 2 carrots", "牛肉高汤 300 毫升 · 300 ml beef stock", "黄油 40 克 · 40 g butter"],
+    "steps": ["土豆煮软，与黄油和少量牛奶压成薯泥 · Boil the potatoes and mash with butter and a splash of milk", "炒香洋葱胡萝卜，加入牛肉末煎至褐色 · Soften onion and carrots, then brown the beef mince", "加入高汤和伍斯特酱，炖 15 分钟 · Add stock and Worcestershire sauce; simmer for 15 minutes", "装入烤盘，铺薯泥，200°C 烤 25 分钟至金黄 · Top with mash and bake at 200°C for 25 minutes until golden"],
+    "image_prompt": "British cottage pie in a small cream baking dish, golden fork-ridged mashed potato top, a serving spoon revealing rich beef filling"
+  },
+  {
+    "key": "mushroom-pasta",
+    "name": "奶油蘑菇意面 · Creamy Mushroom Pasta",
+    "description": "奶油顺滑，蘑菇鲜香的工作日晚餐 · A silky, savoury weeknight pasta",
+    "servings": 2,
+    "total_minutes": 25,
+    "ingredients": ["意面 220 克 · 220 g pasta", "栗子蘑菇 250 克 · 250 g chestnut mushrooms", "淡奶油 150 毫升 · 150 ml double cream", "蒜 2 瓣 · 2 garlic cloves", "帕玛森 40 克 · 40 g Parmesan", "欧芹 1 小把 · 1 small handful parsley"],
+    "steps": ["意面按包装时间煮至有嚼劲，留一杯面水 · Cook pasta until al dente and reserve a mug of pasta water", "蘑菇大火煎至金黄，再加蒜炒香 · Brown the mushrooms over high heat, then add garlic", "倒入奶油、帕玛森和少量面水煮成顺滑酱汁 · Add cream, Parmesan and a splash of pasta water to make a silky sauce", "拌入意面，撒欧芹和黑胡椒 · Toss in the pasta and finish with parsley and black pepper"],
+    "image_prompt": "creamy chestnut mushroom pasta, silky sauce coating tagliatelle, browned mushrooms, parsley and Parmesan"
+  },
+  {
+    "key": "bolognese",
+    "name": "番茄肉酱意面 · Spaghetti Bolognese",
+    "description": "慢炖肉酱，简单可靠的家庭晚餐 · Slow-simmered, dependable family comfort food",
+    "servings": 4,
+    "total_minutes": 60,
+    "ingredients": ["牛肉末 500 克 · 500 g beef mince", "意大利面 400 克 · 400 g spaghetti", "番茄罐头 400 克 · 400 g tinned tomatoes", "洋葱 1 个 · 1 onion", "胡萝卜 1 根 · 1 carrot", "帕玛森奶酪 · Parmesan"],
+    "steps": ["洋葱胡萝卜切碎，小火炒软 · Finely chop and gently soften the onion and carrot", "加入牛肉末，大火煎至褐色 · Add the beef mince and brown well", "加入番茄和少量水，小火炖 35 分钟 · Add tomatoes and a splash of water; simmer for 35 minutes", "与煮好的意面拌匀，撒帕玛森 · Toss with cooked spaghetti and finish with Parmesan"],
+    "image_prompt": "spaghetti bolognese with rich slow-cooked tomato beef ragu, Parmesan and basil, warm ceramic bowl"
+  },
+  {
+    "key": "tikka-masala",
+    "name": "蒂卡玛莎拉鸡 · Chicken Tikka Masala",
+    "description": "英国最熟悉的咖喱之一，浓郁温和 · One of Britain's favourite curries, rich and gently spiced",
+    "servings": 4,
+    "total_minutes": 45,
+    "ingredients": ["去骨鸡腿 650 克 · 650 g boneless chicken thighs", "原味酸奶 120 克 · 120 g plain yoghurt", "蒂卡咖喱酱 3 汤匙 · 3 tbsp tikka curry paste", "番茄碎罐头 400 克 · 400 g chopped tomatoes", "淡奶油 100 毫升 · 100 ml double cream", "印度香米 300 克 · 300 g basmati rice"],
+    "steps": ["鸡肉与酸奶和一半咖喱酱拌匀，腌至少 20 分钟 · Coat chicken with yoghurt and half the curry paste; marinate for at least 20 minutes", "鸡肉高温煎至边缘焦香后盛出 · Sear the chicken over high heat until charred at the edges", "炒剩余咖喱酱，加入番茄煮 15 分钟 · Fry the remaining paste, add tomatoes and simmer for 15 minutes", "鸡肉回锅煮熟，关火拌入奶油，与米饭同食 · Return chicken until cooked, stir in cream off the heat and serve with rice"],
+    "image_prompt": "British chicken tikka masala, charred chicken pieces in velvety orange tomato cream sauce, basmati rice and coriander"
+  },
+  {
+    "key": "roast-salmon",
+    "name": "烤三文鱼时蔬 · Roast Salmon and Vegetables",
+    "description": "一盘完成、清爽省事的营养晚餐 · A fresh, nourishing one-tray dinner",
+    "servings": 2,
+    "total_minutes": 35,
+    "ingredients": ["三文鱼柳 2 块 · 2 salmon fillets", "小土豆 350 克 · 350 g baby potatoes", "西兰花 200 克 · 200 g broccoli", "樱桃番茄 200 克 · 200 g cherry tomatoes", "柠檬 1 个 · 1 lemon", "橄榄油 2 汤匙 · 2 tbsp olive oil"],
+    "steps": ["烤箱预热 210°C，小土豆对半切并拌油盐 · Heat oven to 210°C; halve potatoes and toss with oil and salt", "土豆先烤 15 分钟 · Roast the potatoes for 15 minutes", "加入西兰花番茄和三文鱼，淋柠檬汁 · Add broccoli, tomatoes and salmon; squeeze over lemon", "再烤 12 到 15 分钟，至三文鱼刚熟 · Roast for 12–15 minutes more until salmon is just cooked"],
+    "image_prompt": "one-tray roast salmon with baby potatoes, broccoli, cherry tomatoes and lemon, colourful wholesome British weeknight dinner"
+  },
+  {
+    "key": "tomato-soup-toastie",
+    "name": "番茄汤配芝士吐司 · Tomato Soup and Cheese Toastie",
+    "description": "雨天最舒服的一碗汤和酥脆吐司 · The cosiest rainy-day soup and toastie",
+    "servings": 2,
+    "total_minutes": 30,
+    "ingredients": ["番茄碎罐头 800 克 · 800 g tinned chopped tomatoes", "洋葱 1 个 · 1 onion", "蔬菜高汤 400 毫升 · 400 ml vegetable stock", "酸种面包 4 片 · 4 slices sourdough", "切达奶酪 120 克 · 120 g mature Cheddar", "黄油 20 克 · 20 g butter"],
+    "steps": ["洋葱切碎，用黄油炒软 · Chop the onion and soften it in butter", "加入番茄和高汤，小火煮 20 分钟后打细 · Add tomatoes and stock; simmer 20 minutes, then blend smooth", "面包夹切达奶酪，外侧抹黄油 · Sandwich Cheddar between bread and butter the outsides", "平底锅两面煎至金黄酥脆，与热汤同食 · Fry until crisp and golden on both sides; serve with the hot soup"],
+    "image_prompt": "creamy tomato soup in a warm ceramic bowl with a golden cheddar cheese toastie cut diagonally beside it, rainy-day comfort"
+  },
+  {
+    "key": "berry-porridge",
+    "name": "莓果燕麦粥 · Berry Oat Porridge",
+    "description": "五分钟的温暖早餐，英国超市食材都好买 · A five-minute warm breakfast with easy UK ingredients",
+    "servings": 1,
+    "total_minutes": 8,
+    "ingredients": ["燕麦片 50 克 · 50 g porridge oats", "牛奶 250 毫升 · 250 ml milk", "冷冻莓果 80 克 · 80 g frozen berries", "蜂蜜 1 茶匙 · 1 tsp honey", "希腊酸奶 1 汤匙 · 1 tbsp Greek yoghurt", "坚果 1 小把 · 1 small handful nuts"],
+    "steps": ["燕麦和牛奶放入小锅 · Put oats and milk in a small saucepan", "中小火煮 4 到 5 分钟，不时搅拌 · Cook gently for 4–5 minutes, stirring regularly", "加入一半莓果再煮 1 分钟 · Add half the berries and cook for 1 minute", "装碗后放剩余莓果、酸奶、蜂蜜和坚果 · Top with remaining berries, yoghurt, honey and nuts"],
+    "image_prompt": "berry oat porridge, creamy oats topped with raspberries blueberries yoghurt honey and toasted nuts, cosy breakfast bowl"
+  },
+  {
+    "key": "tray-roast-chicken",
+    "name": "一盘烤鸡 · One-pan Roast Chicken",
+    "description": "鸡腿和根茎蔬菜一起烤，省心又有周日感 · Chicken and root veg with Sunday-roast comfort and weeknight ease",
+    "servings": 4,
+    "total_minutes": 65,
+    "ingredients": ["带骨鸡腿 8 个 · 8 bone-in chicken thighs", "小土豆 600 克 · 600 g baby potatoes", "胡萝卜 3 根 · 3 carrots", "红洋葱 2 个 · 2 red onions", "迷迭香 3 枝 · 3 sprigs rosemary", "橄榄油 2 汤匙 · 2 tbsp olive oil"],
+    "steps": ["烤箱预热 200°C，蔬菜切成大小相近的块 · Heat oven to 200°C and cut vegetables into even chunks", "蔬菜拌油盐和迷迭香，铺在烤盘中 · Toss vegetables with oil, salt and rosemary on a roasting tray", "鸡腿擦干调味，皮朝上放在蔬菜上 · Pat chicken dry, season and place skin-side up over the vegetables", "烤 45 到 50 分钟，至鸡皮酥脆、肉熟透 · Roast for 45–50 minutes until the skin is crisp and chicken cooked through"],
+    "image_prompt": "one-pan roast chicken thighs with crispy golden skin, baby potatoes carrots red onions and rosemary on a dark roasting tray"
+  }
+]
