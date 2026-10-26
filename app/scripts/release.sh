@@ -3,7 +3,7 @@
 #
 # One-time setup:
 #   1. Create the app record in App Store Connect (bundle id io.github.BrookZeng2023.jiachang).
-#   2. Create an App Store Connect API key (App Manager role) and download the .p8 file.
+#   2. Sign into Xcode with the owning team, or configure an API key with signing access.
 #   3. Copy scripts/release.env.example to release.local.env next to project.yml and fill it in.
 #   4. In TestFlight, give the internal group automatic distribution.
 #
@@ -28,10 +28,20 @@ command -v xcodegen >/dev/null || { echo "xcodegen is required" >&2; exit 1; }
 }
 # shellcheck disable=SC1091
 source release.local.env
-for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_PATH DEVELOPMENT_TEAM; do
-  [[ -n "${!name:-}" ]] || { echo "$name is not set in release.local.env" >&2; exit 1; }
-done
-[[ -f "$ASC_KEY_PATH" ]] || { echo "API key not found at $ASC_KEY_PATH" >&2; exit 1; }
+[[ -n "${DEVELOPMENT_TEAM:-}" ]] || { echo "DEVELOPMENT_TEAM is not set" >&2; exit 1; }
+auth_args=(-allowProvisioningUpdates)
+case "${RELEASE_AUTH:-xcode}" in
+  xcode) ;; # Uses the account already signed into Xcode; no API key needed.
+  api)
+    for name in ASC_KEY_ID ASC_ISSUER_ID ASC_KEY_PATH; do
+      [[ -n "${!name:-}" ]] || { echo "$name is not set in release.local.env" >&2; exit 1; }
+    done
+    [[ -f "$ASC_KEY_PATH" ]] || { echo "API key not found at $ASC_KEY_PATH" >&2; exit 1; }
+    auth_args+=(-authenticationKeyPath "$ASC_KEY_PATH"
+      -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+    ;;
+  *) echo "RELEASE_AUTH must be xcode or api" >&2; exit 1 ;;
+esac
 
 if [[ -n "$(git status --porcelain)" ]]; then
   echo "Working tree has uncommitted changes; commit first so the build number maps to a commit" >&2
@@ -60,10 +70,7 @@ if ! xcodebuild archive \
   -configuration Release \
   -destination 'generic/platform=iOS' \
   -archivePath "$archive" \
-  -allowProvisioningUpdates \
-  -authenticationKeyPath "$ASC_KEY_PATH" \
-  -authenticationKeyID "$ASC_KEY_ID" \
-  -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+  "${auth_args[@]}" \
   DEVELOPMENT_TEAM="$DEVELOPMENT_TEAM" \
   CURRENT_PROJECT_VERSION="$build_number" \
   > "$output/archive.log" 2>&1
@@ -93,10 +100,7 @@ if ! xcodebuild -exportArchive \
   -archivePath "$archive" \
   -exportOptionsPlist "$output/ExportOptions.plist" \
   -exportPath "$output/export" \
-  -allowProvisioningUpdates \
-  -authenticationKeyPath "$ASC_KEY_PATH" \
-  -authenticationKeyID "$ASC_KEY_ID" \
-  -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
+  "${auth_args[@]}" \
   > "$output/upload.log" 2>&1
 then
   grep -E "error:|EXPORT FAILED" "$output/upload.log" >&2 || true

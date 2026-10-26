@@ -110,8 +110,8 @@ Uploads use Xcode's own tools; no third-party release tooling is required.
 One-time setup:
 
 1. In App Store Connect, create the app record with bundle id `io.github.BrookZeng2023.jiachang`.
-2. Create an App Store Connect API key (Users and Access → Integrations → App Store Connect API, role App Manager) and download the `.p8` file.
-3. Copy `app/scripts/release.env.example` to `app/release.local.env` (gitignored) and fill in the key id, issuer id, key path and team id.
+2. Sign into Xcode → Settings → Accounts with the Apple account that owns the team. `RELEASE_AUTH=xcode` is the default and was verified for this app's first upload.
+3. Copy `app/scripts/release.env.example` to `app/release.local.env` (gitignored) and fill in the team id. For API authentication, explicitly select `RELEASE_AUTH=api` and supply the key id, issuer id and key path. An App Manager key alone may lack cloud-signing permission; API mode needs a suitable distribution signing setup.
 4. For internal testing, testers must be eligible App Store Connect users with app access; adding an arbitrary Apple ID is not enough. Enable automatic distribution on that internal group. For friends who should not have account access, use an external group instead; beta review and test information may be required before distribution.
 
 Store the `.p8` private key only in the mounted, unlocked PrivateVault, never in the repository or its encrypted backing directory. `release.local.env` contains identifiers and a path, not the key itself. This script uploads a build; it does not create the App Store Connect record, manage testers or submit external beta review.
