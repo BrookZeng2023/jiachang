@@ -32,7 +32,7 @@ def crop(sheet: Path, output: Path, keys: list[str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path, required=True, help="folder containing jc-sheetN.network-response")
-    parser.add_argument("--output", type=Path, default=Path(__file__).with_name("images"))
+    parser.add_argument("--output", type=Path, default=Path(__file__).resolve().parents[1] / "jiachang/Resources/Catalog/images")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
 

@@ -5,20 +5,17 @@ struct HomeView: View {
     @Environment(\.appLanguage) private var language
     @Binding var showEditor: Bool
     @State private var tonight: RecipeSummary?
+    @State private var openedTonight: RecipeSummary?
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
                     header
+                    ProblemText(problem: library.problem)
                     TonightCard(recipe: tonight) { shuffle() }
-                        .overlay {
-                            if let tonight {
-                                NavigationLink(value: tonight) { Color.clear }
-                                    .buttonStyle(.plain)
-                                    .allowsHitTesting(false)
-                            }
-                        }
+                        .contentShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                        .onTapGesture { openedTonight = tonight }
                     recentSection
                 }
                 .padding(.horizontal, 18)
@@ -27,10 +24,11 @@ struct HomeView: View {
             .background(Color.cream)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: RecipeSummary.self) { RecipeDetailView(summary: $0) }
+            .navigationDestination(item: $openedTonight) { RecipeDetailView(summary: $0) }
             .refreshable { await library.refresh() }
             .task { if tonight == nil { tonight = library.recipes.randomElement() } }
             .onChange(of: library.recipes) { _, recipes in
-                if tonight == nil { tonight = recipes.randomElement() }
+                tonight = recipes.first { $0.id == tonight?.id } ?? recipes.randomElement()
             }
         }
     }
@@ -48,10 +46,13 @@ struct HomeView: View {
             }
             Spacer()
             NavigationLink { SettingsView() } label: {
-                Image(systemName: "person.crop.circle")
+                Image(systemName: "info.circle")
                     .font(.system(size: 27, weight: .medium))
                     .foregroundStyle(Color.ink)
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel(copy(.settings, language))
+            .accessibilityHint(copy(.settingsHint, language))
             Button { showEditor = true } label: {
                 Image(systemName: "plus")
                     .font(.system(size: 19, weight: .bold))
@@ -62,6 +63,7 @@ struct HomeView: View {
                     .shadow(color: Color.persimmon.opacity(0.3), radius: 8, y: 4)
             }
             .buttonStyle(PressableCardStyle())
+            .accessibilityLabel(copy(.newRecipe, language))
         }
         .padding(.top, 12)
     }

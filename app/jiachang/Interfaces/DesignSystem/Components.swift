@@ -72,6 +72,28 @@ struct EmptyKitchenView: View {
     }
 }
 
+struct ProblemText: View {
+    let problem: RecipeLibrary.Problem?
+    @Environment(\.appLanguage) private var language
+
+    var body: some View {
+        if let problem {
+            Text(copy(key(for: problem), language))
+                .font(.footnote)
+                .foregroundStyle(Color.terracotta)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func key(for problem: RecipeLibrary.Problem) -> CopyKey {
+        switch problem {
+        case .load: .loadProblem
+        case .save: .saveProblem
+        case .delete: .deleteProblem
+        }
+    }
+}
+
 struct WarmTextField: View {
     let title: String
     @Binding var text: String

@@ -17,6 +17,7 @@ struct LibraryView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     header
                     searchField
+                    ProblemText(problem: library.problem)
                     if library.recipes.isEmpty && !library.isLoading {
                         EmptyKitchenView { showEditor = true }
                             .frame(maxWidth: .infinity)
@@ -90,6 +91,7 @@ struct LibraryView: View {
         ZStack(alignment: .bottomLeading) {
             RecipeArtwork(recipe: recipe)
                 .frame(height: 220)
+                .frame(maxWidth: .infinity)
             LinearGradient(colors: [.clear, .black.opacity(0.72)], startPoint: .center, endPoint: .bottom)
             VStack(alignment: .leading, spacing: 4) {
                 Text(recipe.localizedName(language))

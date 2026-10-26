@@ -7,6 +7,7 @@ struct RecipeDetailView: View {
     @Environment(\.appLanguage) private var language
     @Environment(\.dismiss) private var dismiss
     @State private var recipe: Recipe?
+    @State private var didFailToLoad = false
     @State private var checked = Set<UUID>()
     @State private var showEditor = false
     @State private var confirmDelete = false
@@ -15,7 +16,7 @@ struct RecipeDetailView: View {
         ZStack(alignment: .top) {
             ScrollView {
                 VStack(spacing: 0) {
-                    RecipeArtwork(recipe: summary, size: .original)
+                    RecipeArtwork(recipe: current, size: .original)
                         .frame(height: 390)
                         .frame(maxWidth: .infinity)
                     content
@@ -35,13 +36,22 @@ struct RecipeDetailView: View {
         }
         .background(Color.cream)
         .toolbar(.hidden, for: .navigationBar)
-        .task { recipe = await library.detail(for: summary) }
-        .sheet(isPresented: $showEditor) { RecipeEditorView(recipe: recipe) }
-        .confirmationDialog(copy(.deleteConfirm, language, summary.localizedName(language)), isPresented: $confirmDelete) {
+        .task { await load() }
+        .sheet(isPresented: $showEditor, onDismiss: { Task { await load() } }) {
+            if let recipe { RecipeEditorView(recipe: recipe) }
+        }
+        .confirmationDialog(copy(.deleteConfirm, language, current.localizedName(language)), isPresented: $confirmDelete) {
             Button(copy(.deleteRecipe, language), role: .destructive) {
-                Task { if await library.delete(summary) { dismiss() } }
+                Task { if await library.delete(current) { dismiss() } }
             }
         }
+    }
+
+    private var current: RecipeSummary { recipe?.summary ?? summary }
+
+    private func load() async {
+        recipe = await library.detail(for: summary)
+        didFailToLoad = recipe == nil
     }
 
     private var toolbar: some View {
@@ -52,6 +62,14 @@ struct RecipeDetailView: View {
             Spacer()
             Menu {
                 Button { showEditor = true } label: { Label(copy(.editRecipe, language), systemImage: "pencil") }
+                    .disabled(recipe == nil)
+                if let recipe, recipe.origin == .editedBuiltIn {
+                    Button {
+                        Task { if let original = await library.restoreOriginal(recipe) { self.recipe = original } }
+                    } label: {
+                        Label(copy(.restoreOriginal, language), systemImage: "arrow.uturn.backward")
+                    }
+                }
                 Button(role: .destructive) { confirmDelete = true } label: {
                     Label(copy(.deleteRecipe, language), systemImage: "trash")
                 }
@@ -71,23 +89,24 @@ struct RecipeDetailView: View {
     private var content: some View {
         VStack(alignment: .leading, spacing: JiachangTheme.sectionSpacing) {
             VStack(alignment: .leading, spacing: 10) {
-                Text(summary.localizedName(language))
+                Text(current.localizedName(language))
                     .font(JiachangFont.display(36))
                     .foregroundStyle(Color.ink)
-                if let description = summary.localizedDescription(language), !description.isEmpty {
+                if let description = current.localizedDescription(language), !description.isEmpty {
                     Text(description)
                         .font(.body)
                         .foregroundStyle(Color.muted)
                         .lineSpacing(4)
                 }
                 HStack(spacing: 9) {
-                    if let servings = summary.servings, servings > 0 {
+                    if let servings = current.servings, servings > 0 {
                         MetadataPill(icon: "person.2.fill", text: copy(.servings, language, Int(servings)))
                     }
-                    if let minutes = summary.totalMinutes, minutes > 0 {
+                    if let minutes = current.totalMinutes, minutes > 0 {
                         MetadataPill(icon: "clock.fill", text: copy(.minutes, language, minutes))
                     }
                 }
+                ProblemText(problem: library.problem)
             }
             ingredientSection
             instructionSection
@@ -163,7 +182,7 @@ struct RecipeDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
                 }
             }
-        } else if recipe == nil {
+        } else if recipe == nil && !didFailToLoad {
             ProgressView().frame(maxWidth: .infinity).padding(.vertical, 40)
         }
     }

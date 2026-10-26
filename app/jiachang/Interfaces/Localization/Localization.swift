@@ -3,11 +3,6 @@ import SwiftUI
 enum CopyKey: String {
     case todayTab = "tab.today"
     case recipesTab = "tab.recipes"
-    case tagline
-    case server
-    case username
-    case password
-    case enterKitchen = "onboarding.enter"
     case morning = "greeting.morning"
     case noon = "greeting.noon"
     case afternoon = "greeting.afternoon"
@@ -29,6 +24,7 @@ enum CopyKey: String {
     case editRecipe = "recipe.edit"
     case deleteRecipe = "recipe.delete"
     case deleteConfirm = "recipe.deleteConfirm"
+    case restoreOriginal = "recipe.restoreOriginal"
     case emptyTitle = "empty.title"
     case emptySubtitle = "empty.subtitle"
     case emptyAction = "empty.action"
@@ -45,13 +41,40 @@ enum CopyKey: String {
     case stepPlaceholder = "editor.stepPlaceholder"
     case saveNew = "editor.saveNew"
     case saveEdit = "editor.saveEdit"
+    case takePhoto = "photo.take"
+    case chooseFromLibrary = "photo.library"
+    case cameraDenied = "photo.denied"
+    case cameraUnavailable = "photo.unavailable"
+    case openSettings = "photo.settings"
+    case photoLoadFailed = "photo.failed"
     case settings
+    case settingsHint = "settings.hint"
     case privateCookbook = "settings.privateCookbook"
-    case account
-    case reconnect
-    case about
-    case backendNote = "settings.backendNote"
     case language
+    case starterRecipes = "settings.starterRecipes"
+    case restoreDeleted = "settings.restoreDeleted"
+    case restoreDeletedTitle = "settings.restoreDeletedTitle"
+    case restoreDeletedMessage = "settings.restoreDeletedMessage"
+    case restoreDeletedAction = "settings.restoreDeletedAction"
+    case storageNote = "settings.storageNote"
+    case developerMessage = "settings.developerMessage"
+    case developerMessageBody = "settings.developerMessageBody"
+    case privacyTitle = "about.privacy"
+    case privacyLocalBody = "about.privacy.local"
+    case privacyBackupBody = "about.privacy.backup"
+    case privacyTransferBody = "about.privacy.transfer"
+    case permissionsTitle = "about.permissions"
+    case cameraPermissionBody = "about.permissions.camera"
+    case photoPermissionBody = "about.permissions.photos"
+    case foodSafetyTitle = "about.foodSafety"
+    case foodSafetyBody = "about.foodSafety.body"
+    case licensesTitle = "about.licenses"
+    case starterContentBody = "about.licenses.starter"
+    case softwareLicenseBody = "about.licenses.software"
+    case userPhotosBody = "about.licenses.userPhotos"
+    case loadProblem = "problem.load"
+    case saveProblem = "problem.save"
+    case deleteProblem = "problem.delete"
 }
 
 private struct AppLanguageEnvironmentKey: EnvironmentKey {

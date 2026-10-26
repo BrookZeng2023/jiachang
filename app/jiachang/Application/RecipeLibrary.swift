@@ -4,26 +4,37 @@ import Observation
 @MainActor
 @Observable
 final class RecipeLibrary {
-    private(set) var recipes: [RecipeSummary] = []
-    private(set) var isLoading = false
-    var lastError: String?
+    enum Problem: Equatable {
+        case load
+        case save
+        case delete
+    }
 
-    private var repository: (any RecipeRepository)?
+    private(set) var recipes: [RecipeSummary] = []
+    private(set) var deletedBuiltInCount = 0
+    private(set) var isLoaded = false
+    private(set) var isLoading = false
+    var problem: Problem?
+
+    private let repository: any RecipeRepository
     private var imageCache: [String: Data] = [:]
 
-    func bind(to repository: any RecipeRepository) {
+    init(repository: any RecipeRepository) {
         self.repository = repository
     }
 
     func refresh() async {
-        guard let repository else { return }
         isLoading = true
-        lastError = nil
-        defer { isLoading = false }
+        defer {
+            isLoading = false
+            isLoaded = true
+        }
         do {
             recipes = try await repository.listRecipes()
+            deletedBuiltInCount = try await repository.deletedBuiltInCount()
+            if problem == .load { problem = nil }
         } catch {
-            lastError = error.localizedDescription
+            problem = .load
         }
     }
 
@@ -38,53 +49,64 @@ final class RecipeLibrary {
 
     func detail(for summary: RecipeSummary) async -> Recipe? {
         do {
-            return try await repository?.recipe(slug: summary.slug)
+            return try await repository.recipe(id: summary.id)
         } catch {
-            lastError = error.localizedDescription
+            problem = .load
             return nil
         }
     }
 
     func save(_ draft: RecipeDraft, replacing recipe: Recipe?) async -> Recipe? {
-        guard let repository else { return nil }
+        problem = nil
         do {
             let saved = try await repository.save(draft.normalized, replacing: recipe)
-            let summary = saved.summary
-            if let index = recipes.firstIndex(where: { $0.id == summary.id }) {
-                recipes[index] = summary
-            } else {
-                recipes.insert(summary, at: 0)
-            }
-            imageCache = imageCache.filter { !$0.key.hasPrefix(summary.id.uuidString) }
+            await refresh()
             return saved
         } catch {
-            lastError = error.localizedDescription
+            problem = .save
             return nil
         }
     }
 
     func delete(_ summary: RecipeSummary) async -> Bool {
-        guard let repository else { return false }
+        problem = nil
         do {
-            try await repository.delete(slug: summary.slug)
-            recipes.removeAll { $0.id == summary.id }
+            try await repository.delete(id: summary.id)
+            await refresh()
             return true
         } catch {
-            lastError = error.localizedDescription
+            problem = .delete
             return false
         }
     }
 
-    func imageData(for recipe: RecipeSummary, size: RecipeImageSize) async -> Data? {
-        guard recipe.hasImage, let repository else { return nil }
-        let key = "\(recipe.id.uuidString)-\(size)"
-        if let cached = imageCache[key] { return cached }
+    func restoreOriginal(_ recipe: Recipe) async -> Recipe? {
+        problem = nil
         do {
-            let data = try await repository.imageData(recipeID: recipe.id, size: size)
-            imageCache[key] = data
-            return data
+            let original = try await repository.restoreOriginal(id: recipe.id)
+            await refresh()
+            return original
         } catch {
+            problem = .save
             return nil
         }
+    }
+
+    func restoreDeletedBuiltIns() async {
+        problem = nil
+        do {
+            try await repository.restoreDeletedBuiltIns()
+            await refresh()
+        } catch {
+            problem = .save
+        }
+    }
+
+    func imageData(for recipe: RecipeSummary) async -> Data? {
+        guard let token = recipe.imageToken, !token.isEmpty else { return nil }
+        if let cached = imageCache[token] { return cached }
+        guard let data = try? await repository.imageData(token: token) else { return nil }
+        imageCache[token] = data
+        return data
     }
 }
