@@ -23,6 +23,11 @@ extension RecipeSummary {
     func localizedDescription(_ language: AppLanguage) -> String? { description?.localizedContent(language) }
 }
 
+extension Recipe {
+    func localizedName(_ language: AppLanguage) -> String { name.localizedContent(language) }
+    func localizedDescription(_ language: AppLanguage) -> String? { description?.localizedContent(language) }
+}
+
 extension RecipeIngredient {
     func localizedText(_ language: AppLanguage) -> String { text.localizedContent(language) }
 }

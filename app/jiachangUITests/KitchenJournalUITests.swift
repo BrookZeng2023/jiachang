@@ -58,6 +58,37 @@ final class KitchenJournalUITests: XCTestCase {
         XCTAssertTrue(page.waitForNonExistence(timeout: 5))
     }
 
+    /// Selection and the cookbook form, without ever opening the system share sheet.
+    @MainActor
+    func testCookbookSelectionOpensComposeSheet() throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("UI smoke; simulator only")
+        #endif
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["-appLanguage", "zh-Hans", "-jcLibrary"]
+        app.launch()
+
+        let select = app.buttons["library.select"]
+        XCTAssertTrue(select.waitForExistence(timeout: 15))
+        select.tap()
+        let card = app.buttons["library.recipeCard"].firstMatch
+        XCTAssertTrue(card.waitForExistence(timeout: 5))
+        card.tap()
+
+        let compose = app.buttons["library.compose"]
+        XCTAssertTrue(compose.waitForExistence(timeout: 5))
+        compose.tap()
+
+        let title = app.descendants(matching: .any).matching(identifier: "cookbook.title").firstMatch
+        XCTAssertTrue(title.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["cookbook.generate"].exists)
+
+        app.navigationBars.buttons["取消"].tap()
+        let cancel = app.buttons["library.cancelSelection"]
+        if cancel.exists { cancel.tap() }
+    }
+
     @MainActor
     private func scrollTo(_ element: XCUIElement, in app: XCUIApplication) {
         for _ in 0..<10 {

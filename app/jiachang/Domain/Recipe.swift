@@ -44,6 +44,8 @@ struct Recipe: Hashable, Identifiable {
     let id: UUID
     var name: String
     var description: String?
+    /// A private line the cook attaches to the recipe, carried into share cards and cookbooks.
+    var dedication: String?
     var servings: Double?
     var totalMinutes: Int?
     var imageToken: String?
@@ -67,6 +69,7 @@ struct Recipe: Hashable, Identifiable {
 struct RecipeDraft {
     var name = ""
     var description = ""
+    var dedication = ""
     var servings = 2.0
     var ingredients = [RecipeIngredient(text: "")]
     var instructions = [RecipeInstruction(text: "")]
@@ -77,6 +80,7 @@ struct RecipeDraft {
     init(recipe: Recipe) {
         name = recipe.name
         description = recipe.description ?? ""
+        dedication = recipe.dedication ?? ""
         servings = recipe.servings ?? 2
         ingredients = recipe.ingredients.isEmpty ? [RecipeIngredient(text: "")] : recipe.ingredients
         instructions = recipe.instructions.isEmpty ? [RecipeInstruction(text: "")] : recipe.instructions
@@ -86,6 +90,7 @@ struct RecipeDraft {
         var value = self
         value.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         value.description = description.trimmingCharacters(in: .whitespacesAndNewlines)
+        value.dedication = dedication.trimmingCharacters(in: .whitespacesAndNewlines)
         value.ingredients = ingredients.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
         value.instructions = instructions.filter { !$0.text.trimmingCharacters(in: .whitespaces).isEmpty }
         return value

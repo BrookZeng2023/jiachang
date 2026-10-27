@@ -55,6 +55,8 @@ struct RecipeEditorView: View {
                 .font(JiachangFont.emotional(21))
             WarmTextField(title: copy(.recipeDescription, language), text: $draft.description, axis: .vertical)
                 .lineLimit(2...4)
+            WarmTextField(title: copy(.recipeDedication, language), text: $draft.dedication, axis: .vertical)
+                .lineLimit(1...3)
             HStack {
                 Text(copy(.howMany, language))
                     .font(.subheadline.weight(.semibold))

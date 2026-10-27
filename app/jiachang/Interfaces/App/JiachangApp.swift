@@ -2,7 +2,8 @@ import SwiftUI
 
 @main
 struct JiachangApp: App {
-    @State private var library = RecipeLibrary(repository: LocalRecipeRepository.standard())
+    @State private var library: RecipeLibrary
+    @State private var sharing: SharingService
     @State private var language = LanguageController()
     @State private var photoCapture = PhotoCapture(
         cameraAccess: SystemCameraAccess(),
@@ -11,12 +12,20 @@ struct JiachangApp: App {
 
     init() {
         BundledFontRegistrar().registerAll()
+        let library = RecipeLibrary(repository: LocalRecipeRepository.standard())
+        _library = State(initialValue: library)
+        _sharing = State(initialValue: SharingService(
+            library: library,
+            cardRenderer: ShareCardRenderer(),
+            pdfWriter: CookbookPDFWriter()
+        ))
     }
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(library)
+                .environment(sharing)
                 .environment(language)
                 .environment(photoCapture)
                 .environment(\.appLanguage, language.current)

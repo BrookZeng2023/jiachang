@@ -1,9 +1,10 @@
 import Foundation
 
 /// On-disk overlay: edited built-ins and personal recipes, deleted built-in ids and journal entries.
-/// Version 2 added `journalEntries`; version 1 files load unchanged with an empty journal.
+/// Version 2 added `journalEntries`; version 3 added a per-recipe `dedication`.
+/// Older files load unchanged: missing keys fall back to empty values until the next save.
 struct LocalLibraryDTO: Codable, Equatable {
-    static let currentVersion = 2
+    static let currentVersion = 3
 
     var version = currentVersion
     var recipes: [LocalRecipeDTO] = []
@@ -53,6 +54,7 @@ struct LocalRecipeDTO: Codable, Equatable {
     var id: UUID
     var name: String
     var description: String?
+    var dedication: String?
     var servings: Double?
     var totalMinutes: Int?
     var imageToken: String?
@@ -64,6 +66,7 @@ struct LocalRecipeDTO: Codable, Equatable {
         self.id = id
         name = draft.name
         description = draft.description.isEmpty ? nil : draft.description
+        dedication = draft.dedication.isEmpty ? nil : draft.dedication
         servings = draft.servings > 0 ? draft.servings : nil
         self.totalMinutes = totalMinutes
         self.imageToken = imageToken
@@ -77,6 +80,7 @@ struct LocalRecipeDTO: Codable, Equatable {
             id: id,
             name: name,
             description: description,
+            dedication: dedication,
             servings: servings,
             totalMinutes: totalMinutes,
             imageToken: imageToken,

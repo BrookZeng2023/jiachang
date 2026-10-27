@@ -74,8 +74,50 @@ final class LocalLibraryTests: XCTestCase {
 
         _ = try await repository.addJournal(JournalDraft(), to: tomato)
         let saved = try String(contentsOf: storage.appending(path: "library.json"), encoding: .utf8)
-        XCTAssertTrue(saved.contains("\"version\" : 2"))
+        XCTAssertTrue(saved.contains("\"version\" : 3"))
         XCTAssertTrue(saved.contains("我的汤"))
+    }
+
+    func testVersionTwoLibraryKeepsJournalWhenUpgrading() async throws {
+        try writeCatalog([(tomato, "番茄炒蛋")])
+        let storage = root.appending(path: "Storage")
+        try FileManager.default.createDirectory(at: storage, withIntermediateDirectories: true)
+        let entry = UUID()
+        let v2 = """
+        {"version":2,"deletedBuiltInIDs":[],"recipes":[],"journalEntries":[
+          {"id":"\(entry.uuidString)","recipeID":"\(tomato.uuidString)","date":"2026-10-20T10:00:00Z","note":"少放盐","cookedFor":"妈妈"}
+        ]}
+        """
+        try Data(v2.utf8).write(to: storage.appending(path: "library.json"))
+
+        let repository = makeRepository()
+        let kept = try await repository.journalEntries()
+        XCTAssertEqual(kept.first?.note, "少放盐")
+        XCTAssertEqual(kept.first?.cookedFor, "妈妈")
+        let upgraded = try await repository.recipe(id: tomato)
+        XCTAssertNil(upgraded.dedication, "older files simply have no dedication")
+
+        var draft = RecipeDraft(recipe: upgraded)
+        draft.dedication = "给妈妈"
+        _ = try await repository.save(draft, replacing: upgraded)
+        let saved = try String(contentsOf: storage.appending(path: "library.json"), encoding: .utf8)
+        XCTAssertTrue(saved.contains("\"version\" : 3"))
+        XCTAssertTrue(saved.contains("少放盐"))
+    }
+
+    func testDedicationRoundTripsAndIsClearedByRestoreOriginal() async throws {
+        try writeCatalog([(tomato, "番茄炒蛋")])
+        let repository = makeRepository()
+        let original = try await repository.recipe(id: tomato)
+        var draft = RecipeDraft(recipe: original)
+        draft.dedication = "  给晚归的人  "
+        let edited = try await repository.save(draft.normalized, replacing: original)
+        XCTAssertEqual(edited.dedication, "给晚归的人")
+
+        let restored = try await repository.restoreOriginal(id: tomato)
+        XCTAssertNil(restored.dedication)
+        let reread = try await makeRepository().recipe(id: tomato)
+        XCTAssertNil(reread.dedication)
     }
 
     func testJournalSurvivesCatalogUpdateAndGoesWithItsRecipe() async throws {

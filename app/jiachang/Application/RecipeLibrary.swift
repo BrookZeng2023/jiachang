@@ -70,6 +70,13 @@ final class RecipeLibrary {
         }
     }
 
+    /// Keeps the line that travels with a recipe into share cards and cookbooks.
+    func saveDedication(_ text: String, for recipe: Recipe) async -> Recipe? {
+        var draft = RecipeDraft(recipe: recipe)
+        draft.dedication = text
+        return await save(draft, replacing: recipe)
+    }
+
     func delete(_ summary: RecipeSummary) async -> Bool {
         problem = nil
         do {

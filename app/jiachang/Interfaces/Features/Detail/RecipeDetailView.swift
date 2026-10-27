@@ -12,6 +12,7 @@ struct RecipeDetailView: View {
     @State private var showEditor = false
     @State private var confirmDelete = false
     @State private var showJournal = false
+    @State private var showShare = false
     @State private var showCooking = false
 
     var body: some View {
@@ -43,6 +44,9 @@ struct RecipeDetailView: View {
             if let recipe { RecipeEditorView(recipe: recipe) }
         }
         .sheet(isPresented: $showJournal) { CookJournalEditorView(recipe: current) }
+        .sheet(isPresented: $showShare, onDismiss: { Task { await load() } }) {
+            if let recipe { ShareRecipeSheet(recipe: recipe) }
+        }
         .fullScreenCover(isPresented: $showCooking) {
             if let recipe { CookModeView(recipe: recipe) }
         }
@@ -69,6 +73,10 @@ struct RecipeDetailView: View {
             }
             Spacer()
             Menu {
+                Button { showShare = true } label: {
+                    Label(copy(.shareDish, language), systemImage: "square.and.arrow.up")
+                }
+                .disabled(recipe == nil)
                 Button { showEditor = true } label: { Label(copy(.editRecipe, language), systemImage: "pencil") }
                     .disabled(recipe == nil)
                 if let recipe, recipe.origin == .editedBuiltIn {
@@ -108,6 +116,18 @@ struct RecipeDetailView: View {
                         .foregroundStyle(Color.muted)
                         .lineSpacing(6)
                 }
+                if let dedication = recipe?.dedication, !dedication.isEmpty {
+                    HStack(alignment: .top, spacing: 10) {
+                        Rectangle()
+                            .fill(Color.persimmon)
+                            .frame(width: 3)
+                        Text(dedication)
+                            .font(JiachangFont.emotional(17))
+                            .foregroundStyle(Color.ink)
+                            .lineSpacing(6)
+                    }
+                    .padding(.top, 2)
+                }
                 HStack(spacing: 9) {
                     if let servings = current.servings, servings > 0 {
                         MetadataPill(icon: "person.2.fill", text: copy(.servings, language, Int(servings)))
@@ -136,6 +156,17 @@ struct RecipeDetailView: View {
                 }
                 .accessibilityLabel(copy(.journalHistory, language))
                 .accessibilityIdentifier("journal.new")
+                Button { showShare = true } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.system(size: 19, weight: .semibold))
+                        .foregroundStyle(Color.persimmon)
+                        .frame(width: 54, height: 54)
+                        .background(Color.paper)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.hairline, lineWidth: 1))
+                }
+                .accessibilityLabel(copy(.shareDish, language))
+                .accessibilityIdentifier("recipe.share")
             }
             .disabled(recipe == nil)
             ingredientSection

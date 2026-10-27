@@ -7,6 +7,9 @@ struct LibraryView: View {
     @State private var showEditor = false
     @State private var tonight: RecipeSummary?
     @State private var openedTonight: RecipeSummary?
+    @State private var isSelecting = false
+    @State private var selected = Set<UUID>()
+    @State private var showCompose = false
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -20,7 +23,8 @@ struct LibraryView: View {
                     header
                     searchField
                     ProblemText(problem: library.problem)
-                    if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !library.recipes.isEmpty {
+                    if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        && !library.recipes.isEmpty && !isSelecting {
                         TonightCard(recipe: tonight, onShuffle: shuffle)
                             .onTapGesture { openedTonight = tonight }
                     }
@@ -31,10 +35,16 @@ struct LibraryView: View {
                     } else {
                         LazyVGrid(columns: columns, spacing: 12) {
                             ForEach(library.search(query)) { recipe in
-                                NavigationLink(value: recipe) {
-                                    compactCard(recipe)
+                                if isSelecting {
+                                    Button { toggle(recipe) } label: { compactCard(recipe) }
+                                        .buttonStyle(PressableCardStyle())
+                                        .accessibilityIdentifier("library.recipeCard")
+                                } else {
+                                    NavigationLink(value: recipe) {
+                                        compactCard(recipe)
+                                    }
+                                    .buttonStyle(PressableCardStyle())
                                 }
-                                .buttonStyle(PressableCardStyle())
                             }
                         }
                     }
@@ -47,11 +57,16 @@ struct LibraryView: View {
             .navigationDestination(for: RecipeSummary.self) { RecipeDetailView(summary: $0) }
             .overlay { if library.isLoading { ProgressView().controlSize(.large) } }
             .refreshable { await library.refresh() }
+            .safeAreaInset(edge: .bottom) {
+                if isSelecting { selectionBar }
+            }
             .sheet(isPresented: $showEditor) { RecipeEditorView(recipe: nil) }
+            .sheet(isPresented: $showCompose) { CookbookComposeSheet(recipes: selectedRecipes) }
             .navigationDestination(item: $openedTonight) { RecipeDetailView(summary: $0) }
             .task { if tonight == nil { shuffle() } }
             .onChange(of: library.recipes) { _, recipes in
                 tonight = recipes.first { $0.id == tonight?.id } ?? recipes.randomElement()
+                selected = selected.intersection(Set(recipes.map(\.id)))
             }
         }
     }
@@ -73,15 +88,27 @@ struct LibraryView: View {
                     .foregroundStyle(Color.ink)
             }
             Spacer()
-            Button { showEditor = true } label: {
-                Image(systemName: "plus")
-                    .font(.headline.bold())
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(Color.persimmon)
-                    .clipShape(Circle())
+            if isSelecting {
+                Button(copy(.libraryCancelSelection, language)) { endSelection() }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.persimmon)
+                    .accessibilityIdentifier("library.cancelSelection")
+            } else {
+                Button(copy(.librarySelect, language)) { startSelection() }
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(Color.persimmon)
+                    .padding(.trailing, 4)
+                    .accessibilityIdentifier("library.select")
+                Button { showEditor = true } label: {
+                    Image(systemName: "plus")
+                        .font(.headline.bold())
+                        .foregroundStyle(.white)
+                        .frame(width: 44, height: 44)
+                        .background(Color.persimmon)
+                        .clipShape(Circle())
+                }
+                .buttonStyle(PressableCardStyle())
             }
-            .buttonStyle(PressableCardStyle())
         }
         .padding(.top, 12)
     }
@@ -124,5 +151,70 @@ struct LibraryView: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 21, style: .continuous))
         .shadow(color: Color.ink.opacity(0.10), radius: 10, y: 6)
+        .overlay(alignment: .topTrailing) {
+            if isSelecting {
+                let picked = selected.contains(recipe.id)
+                Image(systemName: picked ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundStyle(picked ? Color.persimmon : Color.white)
+                    .padding(10)
+            }
+        }
+    }
+
+    private var selectedRecipes: [RecipeSummary] {
+        library.recipes.filter { selected.contains($0.id) }
+    }
+
+    private func toggle(_ recipe: RecipeSummary) {
+        if selected.contains(recipe.id) { selected.remove(recipe.id) } else { selected.insert(recipe.id) }
+    }
+
+    private func startSelection() {
+        isSelecting = true
+        selected = []
+    }
+
+    private func endSelection() {
+        isSelecting = false
+        selected = []
+    }
+
+    private var selectionBar: some View {
+        HStack(spacing: 14) {
+            Text(copy(.librarySelectedCount, language, selected.count))
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Color.ink)
+            Button(allVisibleSelected ? copy(.libraryDeselectAll, language) : copy(.librarySelectAll, language)) {
+                if allVisibleSelected {
+                    selected = []
+                } else {
+                    selected = Set(library.search(query).map(\.id))
+                }
+            }
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(Color.persimmon)
+            .disabled(library.recipes.isEmpty)
+            Spacer()
+            Button(copy(.libraryCompose, language)) { showCompose = true }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 18)
+                .padding(.vertical, 11)
+                .background(selected.isEmpty ? Color.muted.opacity(0.45) : Color.persimmon)
+                .clipShape(Capsule())
+                .disabled(selected.isEmpty)
+                .accessibilityIdentifier("library.compose")
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .background(.ultraThinMaterial)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("library.selectionBar")
+    }
+
+    private var allVisibleSelected: Bool {
+        let visible = library.search(query).map(\.id)
+        return !visible.isEmpty && visible.allSatisfy(selected.contains)
     }
 }
