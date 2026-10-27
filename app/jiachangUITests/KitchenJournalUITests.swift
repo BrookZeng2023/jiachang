@@ -82,11 +82,35 @@ final class KitchenJournalUITests: XCTestCase {
 
         let title = app.descendants(matching: .any).matching(identifier: "cookbook.title").firstMatch
         XCTAssertTrue(title.waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["cookbook.generate"].exists)
+        let generate = app.buttons["cookbook.generate"]
+        XCTAssertTrue(generate.exists)
+        generate.tap()
+        XCTAssertTrue(app.buttons["share.send"].waitForExistence(timeout: 30), "the PDF should be ready to share")
 
+        app.navigationBars.buttons["关闭"].tap()
         app.navigationBars.buttons["取消"].tap()
         let cancel = app.buttons["library.cancelSelection"]
         if cancel.exists { cancel.tap() }
+    }
+
+    /// The card pipeline in the real app: dedicate, render, hand over a file.
+    @MainActor
+    func testShareCardGenerates() throws {
+        #if !targetEnvironment(simulator)
+        throw XCTSkip("UI smoke; simulator only")
+        #endif
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["-appLanguage", "zh-Hans", "-jcOpen", "02017C74-8647-421C-B56B-707066090623"]
+        app.launch()
+
+        let share = app.buttons["recipe.share"]
+        XCTAssertTrue(share.waitForExistence(timeout: 15))
+        share.tap()
+        let create = app.buttons["share.create"]
+        XCTAssertTrue(create.waitForExistence(timeout: 5))
+        create.tap()
+        XCTAssertTrue(app.buttons["share.send"].waitForExistence(timeout: 30), "the card should be ready to share")
     }
 
     @MainActor
