@@ -11,7 +11,7 @@ struct AboutNoticesView: View {
             ])
             AboutNoticeSection(title: .foodSafetyTitle, paragraphs: [.foodSafetyBody])
             AboutNoticeSection(title: .licensesTitle, paragraphs: [
-                .starterContentBody, .softwareLicenseBody, .userPhotosBody
+                .starterContentBody, .softwareLicenseBody, .userPhotosBody, .fontLicenseBody
             ])
         }
     }
@@ -28,7 +28,7 @@ private struct AboutNoticeSection: View {
             ForEach(paragraphs, id: \.rawValue) { paragraph in
                 Text(copy(paragraph, language))
                     .font(AboutTypography.body)
-                    .foregroundStyle(Color.ink.opacity(0.85))
+                    .foregroundStyle(AboutTypography.bodyColor)
                     .lineSpacing(AboutTypography.lineSpacing)
                     .fixedSize(horizontal: false, vertical: true)
             }

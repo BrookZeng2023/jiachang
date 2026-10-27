@@ -17,11 +17,14 @@ targets:
       - path: jiachang/Resources/Catalog
         type: folder
         buildPhase: resources
+      - path: jiachang/Resources/Fonts
+        type: folder
+        buildPhase: resources
     info:
       path: jiachang/Info.plist
       properties:
         CFBundleDisplayName: 家常
-        CFBundleShortVersionString: "0.4.0"
+        CFBundleShortVersionString: "0.5.0"
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         CFBundleLocalizations: [zh-Hans, en]
         UILaunchScreen:
@@ -37,6 +40,16 @@ targets:
         CODE_SIGN_STYLE: Automatic
         # Overridden by scripts/release.sh with the git commit count.
         CURRENT_PROJECT_VERSION: 1
+  jiachangUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: jiachangUITests
+    dependencies:
+      - target: jiachang
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
   jiachangTests:
     type: bundle.unit-test
     platform: iOS

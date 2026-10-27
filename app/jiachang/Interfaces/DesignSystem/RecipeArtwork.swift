@@ -55,7 +55,7 @@ struct RecipeImageCard: View {
             )
             VStack(alignment: .leading, spacing: 7) {
                 Text(recipe.localizedName(language))
-                    .font(JiachangFont.display(24))
+                    .font(JiachangFont.emotional(24))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                 HStack(spacing: 8) {

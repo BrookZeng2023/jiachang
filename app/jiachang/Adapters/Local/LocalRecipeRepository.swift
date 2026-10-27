@@ -1,6 +1,6 @@
 import Foundation
 
-enum LocalLibraryError: Error {
+enum LocalLibraryError: Error, Equatable {
     case recipeNotFound
     case notBuiltIn
 }
@@ -9,7 +9,7 @@ enum LocalLibraryError: Error {
 ///
 /// Conflict rules: an edited built-in keeps the user's version across catalog
 /// updates, a deleted built-in stays deleted, and new built-ins simply appear.
-actor LocalRecipeRepository: RecipeRepository {
+actor LocalRecipeRepository: RecipeRepository, JournalRepository {
     private let catalogDirectory: URL
     private let file: LocalLibraryFile
     private let images: LocalImageStore
@@ -72,10 +72,43 @@ actor LocalRecipeRepository: RecipeRepository {
     func delete(id: UUID) throws {
         var library = try library()
         let removed = library.recipes.filter { $0.id == id }
+        let removedEntries = library.journalEntries.filter { $0.recipeID == id }
         library.recipes.removeAll { $0.id == id }
+        library.journalEntries.removeAll { $0.recipeID == id }
         if try builtInIDs().contains(id), !library.deletedBuiltInIDs.contains(id) {
             library.deletedBuiltInIDs.append(id)
         }
+        try persist(library)
+        removed.forEach { removeLocalImage($0.imageToken) }
+        removedEntries.forEach { removeLocalImage($0.imageToken) }
+    }
+
+    func journalEntries() throws -> [JournalEntry] {
+        try library().journalEntries.map(\.domain).sorted { $0.date > $1.date }
+    }
+
+    func addJournal(_ draft: JournalDraft, to recipeID: UUID) throws -> JournalEntry {
+        guard try merged().contains(where: { $0.id == recipeID }) else {
+            throw LocalLibraryError.recipeNotFound
+        }
+        var library = try library()
+        let id = UUID()
+        let imageToken = try draft.imageData.map { RecipeImageToken.local(try images.write($0, for: id)).rawValue }
+        let stored = LocalJournalDTO(id: id, recipeID: recipeID, draft: draft.normalized, imageToken: imageToken)
+        library.journalEntries.append(stored)
+        do {
+            try persist(library)
+        } catch {
+            removeLocalImage(imageToken)
+            throw error
+        }
+        return stored.domain
+    }
+
+    func deleteJournal(id: UUID) throws {
+        var library = try library()
+        let removed = library.journalEntries.filter { $0.id == id }
+        library.journalEntries.removeAll { $0.id == id }
         try persist(library)
         removed.forEach { removeLocalImage($0.imageToken) }
     }
@@ -143,6 +176,8 @@ actor LocalRecipeRepository: RecipeRepository {
     }
 
     private func persist(_ library: LocalLibraryDTO) throws {
+        var library = library
+        library.version = LocalLibraryDTO.currentVersion
         try file.save(library)
         cachedLibrary = library
     }

@@ -5,13 +5,17 @@ struct DeveloperMessageView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label(copy(.developerMessage, language), systemImage: "heart.text.square")
+            Text("A NOTE FROM THE KITCHEN")
+                .font(.system(.caption, design: .serif))
+                .tracking(1.8)
+                .foregroundStyle(Color.persimmon)
+            Text(copy(.developerMessage, language))
                 .font(AboutTypography.heading)
-                .foregroundStyle(Color.terracotta)
+                .foregroundStyle(Color.ink)
                 .accessibilityAddTraits(.isHeader)
             Text(copy(.developerMessageBody, language))
-                .font(AboutTypography.body)
-                .foregroundStyle(Color.ink)
+                .font(JiachangFont.emotional(18))
+                .foregroundStyle(AboutTypography.bodyColor)
                 .lineSpacing(AboutTypography.lineSpacing)
                 .fixedSize(horizontal: false, vertical: true)
         }

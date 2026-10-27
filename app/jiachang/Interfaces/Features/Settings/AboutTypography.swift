@@ -1,11 +1,15 @@
 import SwiftUI
 
-/// Quiet, scalable sans-serif typography for long-form app information.
+/// About-page styles built on the app's three-layer typography:
+/// WenKai for the headings and the note from the kitchen (feeling),
+/// XiHei for the notices (reading).
 enum AboutTypography {
-    static let title = Font.system(.largeTitle, design: .default, weight: .semibold)
-    static let heading = Font.system(.headline, design: .default, weight: .medium)
-    static let body = Font.system(.body, design: .default, weight: .regular)
-    static let lineSpacing: CGFloat = 7
+    static let title = JiachangFont.emotional(34)
+    static let heading = JiachangFont.emotional(22)
+    static let body = JiachangFont.reading(17)
+    static let note = JiachangFont.reading(14)
+    static let lineSpacing: CGFloat = 9
+    static let bodyColor = Color.ink.opacity(0.9)
 }
 
 struct AboutSectionHeading: View {

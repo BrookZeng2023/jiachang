@@ -9,6 +9,10 @@ struct JiachangApp: App {
         normalizer: JPEGPhotoNormalizer()
     )
 
+    init() {
+        BundledFontRegistrar().registerAll()
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()
@@ -49,8 +53,12 @@ struct LaunchView: View {
                     .scaledToFit()
                     .frame(width: 122, height: 122)
                 Text("家常")
-                    .font(JiachangFont.display(34))
+                    .font(JiachangFont.emotional(38))
                     .foregroundStyle(.white)
+                Text("A PERSONAL KITCHEN JOURNAL")
+                    .font(.caption.weight(.semibold))
+                    .tracking(2.4)
+                    .foregroundStyle(.white.opacity(0.72))
             }
         }
     }
@@ -67,9 +75,9 @@ struct MainTabs: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView(showEditor: $showEditor)
+            HomeView(showEditor: $showEditor, openCookbook: { selectedTab = .library })
                 .tag(Tab.home)
-                .tabItem { Label(copy(.todayTab, language), systemImage: "house.fill") }
+                .tabItem { Label(copy(.todayTab, language), systemImage: "book.pages.fill") }
             LibraryView()
                 .tag(Tab.library)
                 .tabItem { Label(copy(.recipesTab, language), systemImage: "book.closed.fill") }

@@ -7,7 +7,7 @@ struct MetadataPill: View {
     var body: some View {
         Label(text, systemImage: icon)
             .font(.caption.weight(.semibold))
-            .foregroundStyle(Color.terracotta)
+            .foregroundStyle(Color.persimmon)
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
             .background(Color.persimmon.opacity(0.10))
@@ -22,7 +22,7 @@ struct SectionHeading: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(title)
-                .font(JiachangFont.display(24, weight: .semibold))
+                .font(JiachangFont.emotional(24))
                 .foregroundStyle(Color.ink)
             if let subtitle {
                 Text(subtitle)
@@ -59,11 +59,12 @@ struct EmptyKitchenView: View {
                 Image("LaunchMark").resizable().scaledToFit().frame(width: 88)
             }
             Text(copy(.emptyTitle, language))
-                .font(JiachangFont.display(29))
+                .font(JiachangFont.emotional(29))
                 .foregroundStyle(Color.ink)
             Text(copy(.emptySubtitle, language))
-                .font(.subheadline)
+                .font(JiachangFont.reading(15))
                 .foregroundStyle(Color.muted)
+                .lineSpacing(5)
             Button(copy(.emptyAction, language), action: action)
                 .buttonStyle(PrimaryButtonStyle())
                 .frame(maxWidth: 260)

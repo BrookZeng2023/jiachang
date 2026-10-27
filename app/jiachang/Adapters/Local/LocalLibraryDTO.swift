@@ -1,10 +1,14 @@
 import Foundation
 
-/// On-disk overlay: edited built-ins and personal recipes, plus deleted built-in ids.
+/// On-disk overlay: edited built-ins and personal recipes, deleted built-in ids and journal entries.
+/// Version 2 added `journalEntries`; version 1 files load unchanged with an empty journal.
 struct LocalLibraryDTO: Codable, Equatable {
-    var version = 1
+    static let currentVersion = 2
+
+    var version = currentVersion
     var recipes: [LocalRecipeDTO] = []
     var deletedBuiltInIDs: [UUID] = []
+    var journalEntries: [LocalJournalDTO] = []
 }
 
 extension LocalLibraryDTO {
@@ -14,6 +18,29 @@ extension LocalLibraryDTO {
         version = try container.decodeIfPresent(Int.self, forKey: .version) ?? 1
         recipes = try container.decodeIfPresent([LocalRecipeDTO].self, forKey: .recipes) ?? []
         deletedBuiltInIDs = try container.decodeIfPresent([UUID].self, forKey: .deletedBuiltInIDs) ?? []
+        journalEntries = try container.decodeIfPresent([LocalJournalDTO].self, forKey: .journalEntries) ?? []
+    }
+}
+
+struct LocalJournalDTO: Codable, Equatable {
+    var id: UUID
+    var recipeID: UUID
+    var date: Date
+    var note: String
+    var cookedFor: String?
+    var imageToken: String?
+
+    init(id: UUID, recipeID: UUID, draft: JournalDraft, imageToken: String?) {
+        self.id = id
+        self.recipeID = recipeID
+        date = draft.date
+        note = draft.note
+        cookedFor = draft.cookedFor.isEmpty ? nil : draft.cookedFor
+        self.imageToken = imageToken
+    }
+
+    var domain: JournalEntry {
+        JournalEntry(id: id, recipeID: recipeID, date: date, note: note, cookedFor: cookedFor, imageToken: imageToken)
     }
 }
 

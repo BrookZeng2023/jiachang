@@ -1,97 +1,79 @@
-# Jiachang Design Notes · 家常设计说明
+# 家常 · At Our Table
 
-## Visual direction: an evening kitchen · 厨房的傍晚
+**A Personal Kitchen Journal**  
+记住怎么做，也记住为什么做。  
+Recipes to make. Moments to keep.
 
-Jiachang treats food photography as the primary interface rather than decoration. The visual system combines warm, saturated colour with restrained information density:
+Jiachang is a private, offline kitchen journal for iPhone. Recipes hold the method; journal pages keep the occasions, people and small changes around each meal. No account, server, streaks or reminders.
 
-| Token | Value | Role |
-|---|---:|---|
-| `cream` | `#FDF8F0` | page background |
-| `persimmon` | `#D9542B` | primary actions |
-| `terracotta` | `#B23A20` | pressed state and emphasis |
-| `sage` | `#5F7F52` | completion and ingredient checks |
-| `caramel` | `#E8A54B` | small highlights |
-| `ink` | `#2E2420` | primary text |
-| `muted` | `#8A7A6E` | secondary text |
+## Visual principles
 
-### Principles
+When browsing, it feels like a book. While cooking, it behaves like a tool.
 
-1. **The photo is the card.** Titles sit on a bottom gradient instead of occupying a separate white panel.
-2. **Warm, not beige.** Persimmon, sage and caramel carry enough saturation to avoid a generic system-app appearance.
-3. **One dominant action.** Add, save and restore use a consistent high-emphasis treatment.
-4. **Editorial type.** Serif display type adds cookbook character; system body type protects readability.
-5. **Graceful missing-image state.** The generated bowl mark and rotating warm gradients replace emoji and grey placeholders.
-6. **Small, useful motion.** Press feedback and ingredient-check animation communicate state without becoming ornamental.
+| Token | Value | Use |
+|---|---|---|
+| cream | `#FDF8F0` | page background |
+| paper | `#FFFDFC` | cards |
+| ink | `#2E2420` | text |
+| persimmon | `#D9542B` | actions and checks: the warmth of a lit stove |
+| caramel | `#E8A54B` | amber accents |
+| hairline | `#EDE3D7` | rules |
+| terracotta | `#B23A20` | errors and destructive actions only |
 
-The app icon is reproducibly drawn by `app/scripts/generate-icon.swift`: a white bowl and three steam strokes on a terracotta gradient.
+The palette stays warm on purpose: persimmon orange for anything the cook touches, cream paper behind it. An earlier sage-green pass read as calm but lost the kitchen warmth, so orange is the canonical accent and the app icon keeps its orange gradient.
 
-## Layered object architecture
+No simulated paper texture, elaborate borders or page-turn animation. Photos can show ordinary cooking, not just finished plates.
 
-```text
-Domain/
-  Recipe.swift             recipe entities, origin and editable draft
-  Services.swift           repository protocol
-  Language.swift           bilingual content selection
+Three font roles are explicit in `Interfaces/DesignSystem/Typography.swift`:
+- `emotional`: WenKai for dish names, dates, stories and the kitchen note.
+- `reading`: Neo XiHei for ingredients, method and explanatory prose.
+- System font: controls, navigation, numeric timers. Latin branding uses the system serif.
 
-Application/
-  RecipeLibrary.swift      list/search/detail/save/delete/restore use cases
-  LanguageController.swift in-app language state
+Font files are bundled offline and registered by the composition root. `app/scripts/build_fonts.py` renames/subsets the upstream fonts while retaining the common GB2312 repertoire for user-written text; rarer characters fall back to system fonts. Font licenses are bundled separately from the app's MIT source-code license.
 
-Adapters/
-  Catalog/                 read-only recipes bundled with each release
-  Local/                   on-device overlay, photo store and merge rules
-
-Interfaces/
-  App/                     composition root
-  DesignSystem/            palette, typography, artwork and components
-  Features/                focused SwiftUI feature modules
-  Localization/            Chinese and English UI copy
-
-Resources/Catalog/         recipes.json and images/<key>.jpg
-```
-
-Dependencies point inward: interfaces call application objects, application objects depend on domain protocols, and adapters implement those protocols. Domain code imports neither SwiftUI nor storage frameworks.
-
-## Offline catalog and user overlay
-
-There is no account and no server. Two sources are merged at read time:
-
-1. **Catalog** — `Resources/Catalog/recipes.json`, read-only, replaced by every release.
-2. **Overlay** — `Application Support/Library/library.json` plus user photos in `Library/Images/`. It stores only what the user changed: full copies of edited built-ins, personal recipes, and the ids of deleted built-ins.
-
-Built-ins are matched by their stable `id`, so a catalog update can fix wording, add recipes or remove recipes without touching user data:
-
-- edited built-in → user version wins; *Restore original* drops the overlay copy
-- deleted built-in → stays hidden; *Restore deleted starter recipes* clears the list
-- edited built-in later removed from the catalog → kept as a personal recipe
-- unreadable overlay file → moved aside as `library.unreadable-<time>.json`, never overwritten
-
-Writes are atomic; a new photo is written before the overlay and the old photo is removed only after the overlay is saved.
-
-## Data localization
-
-Recipes use a portable delimiter instead of per-field translations:
+## Model and layers
 
 ```text
-番茄炒蛋 · Tomato and Egg Stir-fry
+Domain/       Recipe, JournalEntry, JournalDraft, CookingTimer; repository and camera protocols
+Application/  RecipeLibrary, CookingSession, PhotoCapture, LanguageController
+Adapters/     bundled catalog, local JSON/photos, system camera/image/font adapters
+Interfaces/   SwiftUI features, semantic styles, localization
+Resources/    read-only catalog, photos, fonts and their licenses
 ```
 
-The app displays the selected side. Recipes without the delimiter are shown unchanged in either language.
+A `Recipe` is a stable method. A `JournalEntry` records one occasion and references its recipe by UUID. One recipe has many entries. A dated entry may have a note, a person/people, and its own photo; it does not overwrite the recipe or change its method.
 
-## Camera and photo boundaries
+Both recipe and journal protocols are implemented by a single local actor, allowing related writes to commit atomically. Application objects own observable state; views never parse the storage file or ask permission APIs directly.
 
-The composition root injects `PhotoCapture` with the `CameraAccess` and `PhotoNormalizer` domain protocols. The application object handles permission outcomes and image preparation; `SystemCameraAccess` and `JPEGPhotoNormalizer` implement the platform details. `CameraCaptureView` only bridges the system camera delegate to SwiftUI. Camera permission is requested on the explicit take-photo action, not at launch. Denied or unavailable access leaves the system photo picker usable; captured photos are not written to the system photo library.
+## Local storage and upgrades
 
-Recipe artwork is rendered as an overlay inside its container, so aspect-fill images cannot increase a grid cell's measured width.
+`Application Support/Library/library.json` contains the user's overlay. Photos live beside it in `Images/`.
 
-## Quality strategy
+- Bundled catalog recipes retain stable ids across app releases.
+- Edits win over catalog updates; deleted starters stay hidden; new starters appear.
+- Restoring a starter drops its recipe override, not its journal.
+- Explicitly deleting a recipe deletes its entries and their photos; confirmation explains this. Restoring that starter does not recover the deleted journal.
+- Schema v2 adds `journalEntries`. v1 files decode with an empty journal; the next successful write stamps version 2 without losing recipes, deletion markers or image tokens.
+- JSON writes are atomic. Photos are written first; failed JSON writes roll back the new photo, and old photos are removed only after a successful commit.
+- Unreadable files are moved aside, not overwritten. Device/system backups depend on the user's settings. There is no in-app backup export or sync yet.
 
-The test suite stays intentionally small. It covers the contracts most likely to break user data or a release:
+The journal home is a reverse-chronological list, not a demand to log every meal. On an empty journal it explains how to record a first page. "What's for dinner?" remains in the cookbook, separate from actual cooking history.
 
-- the shipped catalog decodes, ids are unique and every photo exists
-- edits, deletions and photos survive a catalog update; restore works
-- an unreadable overlay is set aside, not overwritten
-- bilingual content selection
-- draft normalization
+## Cooking mode
 
-`app/scripts/check.sh` regenerates the Xcode project and runs the focused suite against a caller-selected simulator.
+`CookingSession` owns step position, ingredient checks and one timer. `CookingTimer` is a value model with an injected clock and deadline-based remaining time; rendering is separate.
+
+- Focused steps use larger reading text. Controls and timers use system typography.
+- Minutes in a step are suggestions only. Ambiguous ranges/multiple durations require manual input; bilingual text is not counted twice.
+- A timer stays associated with its starting step, even when navigating steps.
+- Leaving the foreground pauses it; returning requires explicit resume. The interface states this limitation. Foreground completion emits sound and haptic once. No notification permission, background alarm or guarantee is implied.
+
+## Photos and privacy
+
+`PhotoCapture` depends on `CameraAccess` and `PhotoNormalizer` protocols. The system adapters handle authorization and JPEG normalization. The view bridge only presents the camera. Camera permission is requested after the explicit take-photo action, never on launch. The system photo picker only shares the selected photo. Captured photos are not saved into the system photo library.
+
+No analytics, ads, backend or automatic sharing. Private notes, people and photos are not published. Sharing/export and bookshelves are later work, not decorative inactive tabs.
+
+## Verification
+
+`app/scripts/check.sh` regenerates the Xcode project, builds and runs focused tests. Contract tests cover catalog integrity, font registration/glyph coverage, recipe/journal persistence, v1 migration, cascade deletion, rejected references, image normalization and camera failures. Timer tests inject time and cover pause/resume/completion/boundaries/parsing. One simulator-only UI smoke test writes a uniquely named journal page, relaunches, opens its recipe and cooking mode, and cleans up that page.

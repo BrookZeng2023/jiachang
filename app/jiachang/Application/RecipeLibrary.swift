@@ -11,15 +11,16 @@ final class RecipeLibrary {
     }
 
     private(set) var recipes: [RecipeSummary] = []
+    private(set) var journal: [JournalEntry] = []
     private(set) var deletedBuiltInCount = 0
     private(set) var isLoaded = false
     private(set) var isLoading = false
     var problem: Problem?
 
-    private let repository: any RecipeRepository
+    private let repository: any RecipeRepository & JournalRepository
     private var imageCache: [String: Data] = [:]
 
-    init(repository: any RecipeRepository) {
+    init(repository: any RecipeRepository & JournalRepository) {
         self.repository = repository
     }
 
@@ -31,6 +32,7 @@ final class RecipeLibrary {
         }
         do {
             recipes = try await repository.listRecipes()
+            journal = try await repository.journalEntries()
             deletedBuiltInCount = try await repository.deletedBuiltInCount()
             if problem == .load { problem = nil }
         } catch {
@@ -102,8 +104,48 @@ final class RecipeLibrary {
         }
     }
 
+    func entries(for recipeID: UUID) -> [JournalEntry] {
+        journal.filter { $0.recipeID == recipeID }
+    }
+
+    func recipeName(for entry: JournalEntry) -> String? {
+        recipes.first { $0.id == entry.recipeID }?.name
+    }
+
+    func addJournal(_ draft: JournalDraft, to recipeID: UUID) async -> JournalEntry? {
+        problem = nil
+        do {
+            let entry = try await repository.addJournal(draft, to: recipeID)
+            await refresh()
+            return entry
+        } catch {
+            problem = .save
+            return nil
+        }
+    }
+
+    func deleteJournal(_ entry: JournalEntry) async -> Bool {
+        problem = nil
+        do {
+            try await repository.deleteJournal(id: entry.id)
+            await refresh()
+            return true
+        } catch {
+            problem = .delete
+            return false
+        }
+    }
+
     func imageData(for recipe: RecipeSummary) async -> Data? {
-        guard let token = recipe.imageToken, !token.isEmpty else { return nil }
+        await imageData(token: recipe.imageToken)
+    }
+
+    func imageData(for entry: JournalEntry) async -> Data? {
+        await imageData(token: entry.imageToken)
+    }
+
+    private func imageData(token: String?) async -> Data? {
+        guard let token, !token.isEmpty else { return nil }
         if let cached = imageCache[token] { return cached }
         guard let data = try? await repository.imageData(token: token) else { return nil }
         imageCache[token] = data

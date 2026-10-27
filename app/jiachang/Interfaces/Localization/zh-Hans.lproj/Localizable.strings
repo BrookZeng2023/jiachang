@@ -1,4 +1,4 @@
-"tab.today" = "今天";
+"tab.today" = "手记";
 "tab.recipes" = "菜谱";
 "greeting.morning" = "早上好";
 "greeting.noon" = "中午好";
@@ -18,6 +18,7 @@
 "recipe.ingredients" = "食材";
 "recipe.ingredientsHint" = "备好的食材，轻点划掉";
 "recipe.steps" = "做法";
+"recipe.actions" = "菜谱操作";
 "recipe.edit" = "编辑菜谱";
 "recipe.delete" = "删除菜谱";
 "recipe.deleteConfirm" = "删除「%@」？";
@@ -27,6 +28,7 @@
 "editor.new" = "记一道菜";
 "editor.edit" = "编辑菜谱";
 "cancel" = "取消";
+"editor.finishEditing" = "完成输入";
 "editor.changePhoto" = "换一张照片";
 "editor.aboutDish" = "这道菜";
 "editor.name" = "菜名";
@@ -54,8 +56,16 @@
 "settings.restoreDeletedMessage" = "%d 道内置菜谱会回到菜谱册里，你自己记的菜不受影响。";
 "settings.restoreDeletedAction" = "找回";
 "settings.storageNote" = "家常 v%@ · 用心记下每一餐";
-"settings.developerMessage" = "开发者说";
-"settings.developerMessageBody" = "我是 Brook，我相信食物能传递温暖和幸福，也希望将这份祝福传递给你。";
+"settings.developerMessage" = "写在前面";
+"settings.developerMessageBody" = "你好，欢迎来到我的厨房。
+
+这里记录着我做过的饭菜，也收藏着一些平凡日子里的温暖。我始终相信，食物不只是味道，也能传递关心与幸福。
+
+菜谱里的时间和分量只是参考。你可以按照自己的喜好调整，也可以慢慢找到属于自己的味道。
+
+希望这些菜谱，能为你的餐桌带去一点温暖。
+
+—— Brook";
 "about.privacy" = "隐私";
 "about.privacy.local" = "家常无需账号，没有网络后端、使用分析或广告。你记下的菜谱和照片保存在这台 iPhone 上家常自己的空间（应用沙箱）里。";
 "about.privacy.backup" = "这些数据可能随系统备份保存，取决于你的系统设置。删除应用会移除本机数据；备份中的副本由系统管理。";
@@ -69,6 +79,47 @@
 "about.licenses.starter" = "内置菜谱的图片由 AI 生成。";
 "about.licenses.software" = "家常的源代码以 MIT 许可证开源，完整条款见项目中的 LICENSE 文件。软件许可不代表所有照片的使用授权。";
 "about.licenses.userPhotos" = "你拥有的照片仍属于你。自行添加的照片与内置图片不同，不会因为加入家常就自动适用 MIT 许可。请只使用你有权使用的照片。";
+"about.licenses.font" = "文字使用开源字体：标题与寄语为基于「落霞孤鹜文楷」制作的家楷（SIL 开源字体许可证 1.1），正文为基于「霞鹜新晰黑」制作的家黑（IPA 字体许可证 1.0）。两份许可证全文都随 App 附带。";
 "problem.load" = "菜谱没能读出来，下拉再试一次";
 "problem.save" = "没能保存，请再试一次";
 "problem.delete" = "没能删除，请再试一次";
+"journal.greeting" = "好好吃饭，慢慢生活。";
+"journal.tagline" = "每一道熟悉的味道，都有自己的故事。";
+"journal.empty" = "这本手记还是空的";
+"journal.emptyHint" = "翻开一道菜，做完之后把这一页记下来，它就会留在这里。";
+"journal.browse" = "去翻菜谱";
+"journal.history" = "下厨手记";
+"journal.date" = "什么时候做的";
+"journal.for" = "为谁做的（可不填）";
+"journal.forPerson" = "为%@做的";
+"journal.note" = "这次有什么不同";
+"journal.noteHint" = "咸淡、火候、换了什么料，或者那顿饭的心情";
+"journal.save" = "记下这一页";
+"journal.delete" = "删除这页手记";
+"journal.deleteConfirm" = "删除这页手记？菜谱本身不会受影响。";
+"journal.deleteRecipeWarning" = "同时删除这道菜的 %d 篇手记和照片。恢复内置菜谱不会找回这些手记。";
+"season.spring" = "春日厨房";
+"season.summer" = "夏日厨房";
+"season.autumn" = "秋日厨房";
+"season.winter" = "冬日厨房";
+"cook.start" = "开始做饭";
+"cook.mode" = "烹饪模式";
+"cook.close" = "关闭";
+"cook.done" = "完成";
+"cook.stepProgress" = "第 %d 步，共 %d 步";
+"cook.previous" = "上一步";
+"cook.next" = "下一步";
+"cook.noSteps" = "暂无步骤";
+"cook.noStepsMessage" = "这道菜还没有烹饪步骤，可以先查看食材。";
+"cook.noIngredients" = "暂无食材";
+"cook.timer" = "计时器";
+"cook.timerMinutes" = "计时 %d 分钟";
+"cook.timerStart" = "开始计时";
+"cook.timerPause" = "暂停";
+"cook.timerResume" = "继续计时";
+"cook.timerReset" = "重置";
+"cook.timerCancel" = "取消计时";
+"cook.timerPaused" = "已暂停，轻点继续计时";
+"cook.timerFinished" = "计时结束";
+"cook.timerPolicy" = "离开前台会暂停计时，回来后需手动继续；不会发送系统通知。";
+"cook.timerSourceStep" = "第 %d 步的计时";

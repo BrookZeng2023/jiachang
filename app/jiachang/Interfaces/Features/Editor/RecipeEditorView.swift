@@ -52,7 +52,7 @@ struct RecipeEditorView: View {
         VStack(alignment: .leading, spacing: 13) {
             SectionHeading(title: copy(.aboutDish, language))
             WarmTextField(title: copy(.recipeName, language), text: $draft.name)
-                .font(JiachangFont.display(21, weight: .semibold))
+                .font(JiachangFont.emotional(21))
             WarmTextField(title: copy(.recipeDescription, language), text: $draft.description, axis: .vertical)
                 .lineLimit(2...4)
             HStack {
@@ -62,7 +62,7 @@ struct RecipeEditorView: View {
                 Spacer()
                 Stepper(copy(.servings, language, Int(draft.servings)), value: $draft.servings, in: 1...20)
                     .fixedSize()
-                    .font(JiachangFont.rounded(16, weight: .semibold))
+                    .font(Font.system(size: 16, weight: .semibold))
             }
             .padding(16)
             .background(Color.paper)
@@ -101,7 +101,7 @@ struct RecipeEditorView: View {
                 ForEach($draft.instructions) { $instruction in
                     HStack(alignment: .top, spacing: 10) {
                         Text("\(stepNumber(of: instruction))")
-                            .font(JiachangFont.rounded(15, weight: .bold))
+                            .font(Font.system(size: 15, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 30, height: 30)
                             .background(Color.persimmon)

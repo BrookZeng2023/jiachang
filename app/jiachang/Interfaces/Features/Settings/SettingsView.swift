@@ -32,7 +32,7 @@ struct SettingsView: View {
                 Divider().overlay(Color.hairline)
                 AboutNoticesView()
                 Text(copy(.storageNote, language, appVersion))
-                    .font(.footnote)
+                    .font(AboutTypography.note)
                     .foregroundStyle(Color.muted)
                     .frame(maxWidth: .infinity)
                     .padding(.top, 20)
