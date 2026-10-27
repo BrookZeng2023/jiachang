@@ -22,8 +22,8 @@ struct RecipeEditorView: View {
                     basics
                     ingredients
                     instructions
-                    if let error = library.lastError {
-                        Text(error).font(.footnote).foregroundStyle(Color.terracotta)
+                    if library.problem == .save {
+                        ProblemText(problem: .save)
                     }
                     Button {
                         save()
@@ -40,6 +40,7 @@ struct RecipeEditorView: View {
             .background(Color.cream)
             .navigationTitle(recipe == nil ? copy(.newRecipe, language) : copy(.editTitle, language))
             .navigationBarTitleDisplayMode(.inline)
+            .interactiveDismissDisabled(isSaving)
             .toolbarBackground(Color.cream, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button(copy(.cancel, language)) { dismiss() } }
@@ -51,7 +52,7 @@ struct RecipeEditorView: View {
         VStack(alignment: .leading, spacing: 13) {
             SectionHeading(title: copy(.aboutDish, language))
             WarmTextField(title: copy(.recipeName, language), text: $draft.name)
-                .font(JiachangFont.display(21, weight: .semibold))
+                .font(JiachangFont.emotional(21))
             WarmTextField(title: copy(.recipeDescription, language), text: $draft.description, axis: .vertical)
                 .lineLimit(2...4)
             HStack {
@@ -61,7 +62,7 @@ struct RecipeEditorView: View {
                 Spacer()
                 Stepper(copy(.servings, language, Int(draft.servings)), value: $draft.servings, in: 1...20)
                     .fixedSize()
-                    .font(JiachangFont.rounded(16, weight: .semibold))
+                    .font(Font.system(size: 16, weight: .semibold))
             }
             .padding(16)
             .background(Color.paper)
@@ -77,11 +78,11 @@ struct RecipeEditorView: View {
                 addButton { draft.ingredients.append(RecipeIngredient(text: "")) }
             }
             VStack(spacing: 10) {
-                ForEach(draft.ingredients.indices, id: \.self) { index in
+                ForEach($draft.ingredients) { $ingredient in
                     HStack(spacing: 9) {
-                        WarmTextField(title: copy(.ingredientPlaceholder, language), text: $draft.ingredients[index].text)
+                        WarmTextField(title: copy(.ingredientPlaceholder, language), text: $ingredient.text)
                         deleteButton {
-                            if draft.ingredients.count > 1 { draft.ingredients.remove(at: index) }
+                            if draft.ingredients.count > 1 { draft.ingredients.removeAll { $0.id == ingredient.id } }
                         }
                     }
                 }
@@ -97,25 +98,29 @@ struct RecipeEditorView: View {
                 addButton { draft.instructions.append(RecipeInstruction(text: "")) }
             }
             VStack(spacing: 12) {
-                ForEach(draft.instructions.indices, id: \.self) { index in
+                ForEach($draft.instructions) { $instruction in
                     HStack(alignment: .top, spacing: 10) {
-                        Text("\(index + 1)")
-                            .font(JiachangFont.rounded(15, weight: .bold))
+                        Text("\(stepNumber(of: instruction))")
+                            .font(Font.system(size: 15, weight: .bold))
                             .foregroundStyle(.white)
                             .frame(width: 30, height: 30)
                             .background(Color.persimmon)
                             .clipShape(Circle())
                             .padding(.top, 9)
-                        WarmTextField(title: copy(.stepPlaceholder, language), text: $draft.instructions[index].text, axis: .vertical)
+                        WarmTextField(title: copy(.stepPlaceholder, language), text: $instruction.text, axis: .vertical)
                             .lineLimit(2...5)
                         deleteButton {
-                            if draft.instructions.count > 1 { draft.instructions.remove(at: index) }
+                            if draft.instructions.count > 1 { draft.instructions.removeAll { $0.id == instruction.id } }
                         }
                         .padding(.top, 6)
                     }
                 }
             }
         }
+    }
+
+    private func stepNumber(of instruction: RecipeInstruction) -> Int {
+        (draft.instructions.firstIndex { $0.id == instruction.id } ?? 0) + 1
     }
 
     private func addButton(_ action: @escaping () -> Void) -> some View {

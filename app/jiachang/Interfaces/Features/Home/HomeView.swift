@@ -4,122 +4,106 @@ struct HomeView: View {
     @Environment(RecipeLibrary.self) private var library
     @Environment(\.appLanguage) private var language
     @Binding var showEditor: Bool
-    @State private var tonight: RecipeSummary?
+    let openCookbook: () -> Void
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
+                LazyVStack(alignment: .leading, spacing: 28) {
                     header
-                    TonightCard(recipe: tonight) { shuffle() }
-                        .overlay {
-                            if let tonight {
-                                NavigationLink(value: tonight) { Color.clear }
-                                    .buttonStyle(.plain)
-                                    .allowsHitTesting(false)
+                    introduction
+                    ProblemText(problem: library.problem)
+                    if library.journal.isEmpty {
+                        emptyJournal
+                    } else {
+                        ForEach(library.journal) { entry in
+                            if let recipe = library.recipes.first(where: { $0.id == entry.recipeID }) {
+                                NavigationLink(value: recipe) {
+                                    JournalCard(entry: entry, recipe: recipe)
+                                }
+                                .buttonStyle(PressableCardStyle())
+                            } else {
+                                JournalCard(entry: entry, recipe: nil)
                             }
                         }
-                    recentSection
+                    }
                 }
-                .padding(.horizontal, 18)
-                .padding(.bottom, 30)
+                .padding(20)
+                .padding(.bottom, 24)
             }
             .background(Color.cream)
             .toolbar(.hidden, for: .navigationBar)
             .navigationDestination(for: RecipeSummary.self) { RecipeDetailView(summary: $0) }
             .refreshable { await library.refresh() }
-            .task { if tonight == nil { tonight = library.recipes.randomElement() } }
-            .onChange(of: library.recipes) { _, recipes in
-                if tonight == nil { tonight = recipes.randomElement() }
-            }
         }
     }
 
     private var header: some View {
         HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(dateText)
-                    .font(.caption.weight(.bold))
-                    .tracking(1.2)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("AT OUR TABLE")
+                    .font(.system(.caption, design: .serif))
+                    .tracking(2.4)
                     .foregroundStyle(Color.persimmon)
-                Text(greeting)
-                    .font(JiachangFont.display(34))
-                    .foregroundStyle(Color.ink)
+                Text("家常").font(JiachangFont.emotional(38)).foregroundStyle(Color.ink)
             }
             Spacer()
             NavigationLink { SettingsView() } label: {
-                Image(systemName: "person.crop.circle")
-                    .font(.system(size: 27, weight: .medium))
-                    .foregroundStyle(Color.ink)
+                Image(systemName: "info.circle").font(.title2).frame(width: 44, height: 44)
             }
+            .accessibilityLabel(copy(.settings, language))
             Button { showEditor = true } label: {
-                Image(systemName: "plus")
-                    .font(.system(size: 19, weight: .bold))
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(Color.persimmon)
-                    .clipShape(Circle())
-                    .shadow(color: Color.persimmon.opacity(0.3), radius: 8, y: 4)
+                Image(systemName: "plus").font(.headline).frame(width: 44, height: 44)
             }
-            .buttonStyle(PressableCardStyle())
+            .accessibilityLabel(copy(.newRecipe, language))
         }
-        .padding(.top, 12)
     }
 
-    @ViewBuilder
-    private var recentSection: some View {
-        if library.recipes.isEmpty && !library.isLoading {
-            EmptyKitchenView { showEditor = true }
-                .frame(maxWidth: .infinity)
-                .padding(.top, 24)
-        } else {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    SectionHeading(title: copy(.recent, language))
-                    Spacer()
-                    Text(copy(.dishCount, language, library.recipes.count))
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(Color.muted)
+    private var introduction: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("\(today) · \(copy(season, language))")
+                .font(JiachangFont.emotional(16))
+                .foregroundStyle(Color.persimmon)
+            Text(copy(.journalGreeting, language))
+                .font(JiachangFont.emotional(30))
+                .foregroundStyle(Color.ink)
+            Text(copy(.journalTagline, language))
+                .font(JiachangFont.emotional(18))
+                .foregroundStyle(Color.muted)
+                .lineSpacing(6)
+        }
+    }
+
+    private var emptyJournal: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            if let recipe = library.recipes.first {
+                NavigationLink(value: recipe) {
+                    RecipeArtwork(recipe: recipe, size: .original)
+                        .frame(height: 260)
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
                 }
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
-                        ForEach(library.recipes.prefix(10)) { recipe in
-                            NavigationLink(value: recipe) {
-                                RecipeImageCard(recipe: recipe, height: 190)
-                                    .frame(width: 280)
-                            }
-                            .buttonStyle(PressableCardStyle())
-                        }
-                    }
-                    .padding(.bottom, 18)
-                }
-                .contentMargins(.horizontal, 0, for: .scrollContent)
+                .buttonStyle(.plain)
             }
+            Text(copy(.journalEmpty, language))
+                .font(JiachangFont.emotional(24))
+                .foregroundStyle(Color.ink)
+            Text(copy(.journalEmptyHint, language))
+                .font(JiachangFont.reading(17))
+                .foregroundStyle(Color.muted)
+                .lineSpacing(7)
+            Button(copy(.journalBrowse, language), action: openCookbook)
+                .buttonStyle(PrimaryButtonStyle())
         }
     }
 
-    private func shuffle() {
-        guard !library.recipes.isEmpty else { return }
-        withAnimation(.spring(response: 0.42, dampingFraction: 0.8)) {
-            if library.recipes.count == 1 {
-                tonight = library.recipes[0]
-            } else {
-                let previous = tonight
-                repeat { tonight = library.recipes.randomElement() } while tonight == previous
-            }
-        }
-    }
+    private var today: String { KitchenDate.short(Date(), language: language) }
 
-    private var greeting: String {
-        switch Calendar.current.component(.hour, from: Date()) {
-        case 5..<11: copy(.morning, language)
-        case 11..<14: copy(.noon, language)
-        case 14..<18: copy(.afternoon, language)
-        default: copy(.evening, language)
+    private var season: CopyKey {
+        switch Calendar.current.component(.month, from: Date()) {
+        case 3...5: .seasonSpring
+        case 6...8: .seasonSummer
+        case 9...11: .seasonAutumn
+        default: .seasonWinter
         }
-    }
-
-    private var dateText: String {
-        Date().formatted(.dateTime.month(.wide).day().weekday(.wide).locale(language.locale))
     }
 }

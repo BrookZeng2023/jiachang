@@ -1,6 +1,7 @@
 [
   {
     "key": "tomato-eggs",
+    "id": "02017C74-8647-421C-B56B-707066090623",
     "name": "番茄炒蛋 · Tomato and Egg Stir-fry",
     "description": "酸甜鲜嫩，十分钟就能上桌 · Sweet, savoury and ready in ten minutes",
     "servings": 2,
@@ -11,6 +12,7 @@
   },
   {
     "key": "pepper-potato",
+    "id": "A5B11C4E-A56E-4395-8C5B-CB411E79261D",
     "name": "青椒土豆丝 · Stir-fried Potato with Peppers",
     "description": "清脆爽口的家常快炒 · A crisp, bright everyday stir-fry",
     "servings": 2,
@@ -21,6 +23,7 @@
   },
   {
     "key": "soy-chicken",
+    "id": "9DA2B386-3616-45EF-BEC7-BFAA21020A29",
     "name": "红烧鸡腿 · Soy-braised Chicken Thighs",
     "description": "酱香浓郁，配米饭最合适 · Rich soy-braised chicken made for rice",
     "servings": 4,
@@ -31,6 +34,7 @@
   },
   {
     "key": "mapo-tofu",
+    "id": "6BB1E58E-8868-4D1B-81B2-F25ACE3C7A7C",
     "name": "麻婆豆腐 · Mapo Tofu",
     "description": "麻辣下饭，可按口味减辣 · Silky, savoury and as spicy as you like",
     "servings": 3,
@@ -41,6 +45,7 @@
   },
   {
     "key": "scallion-noodles",
+    "id": "37AC2297-E1BC-481F-A581-FBBBCD74926A",
     "name": "葱油拌面 · Spring Onion Oil Noodles",
     "description": "葱香焦甜，简单却很满足 · Fragrant, caramelised and deeply comforting",
     "servings": 2,
@@ -51,6 +56,7 @@
   },
   {
     "key": "tomato-beef-stew",
+    "id": "F91C4B00-D1F3-4FB6-A88E-D71062A7303F",
     "name": "番茄炖牛肉 · Tomato Beef Stew",
     "description": "温暖浓郁，适合英国的冷天 · A rich, warming pot for a cold British day",
     "servings": 4,
@@ -61,6 +67,7 @@
   },
   {
     "key": "garlic-broccoli",
+    "id": "65D9337C-DA2D-485F-9B94-0332F9776222",
     "name": "蒜蓉西兰花 · Garlic Broccoli",
     "description": "翠绿爽脆，工作日晚餐的快手配菜 · Bright, crisp and perfect for a weeknight",
     "servings": 3,
@@ -71,6 +78,7 @@
   },
   {
     "key": "egg-fried-rice",
+    "id": "734FC7AD-9684-4787-BE99-CB6892A9A1E1",
     "name": "蛋炒饭 · Egg Fried Rice",
     "description": "把隔夜饭变成香喷喷的一餐 · Turn yesterday's rice into a brilliant meal",
     "servings": 2,
@@ -81,6 +89,7 @@
   },
   {
     "key": "cottage-pie",
+    "id": "B7916109-7A02-43CD-98D4-0A67D3CF5DCB",
     "name": "农舍派 · Cottage Pie",
     "description": "牛肉蔬菜上盖金黄薯泥的英国经典 · A British classic with savoury beef under golden mash",
     "servings": 4,
@@ -91,6 +100,7 @@
   },
   {
     "key": "mushroom-pasta",
+    "id": "7A19E8C8-47FA-42C6-84A0-EB8E2D9ABD94",
     "name": "奶油蘑菇意面 · Creamy Mushroom Pasta",
     "description": "奶油顺滑，蘑菇鲜香的工作日晚餐 · A silky, savoury weeknight pasta",
     "servings": 2,
@@ -101,6 +111,7 @@
   },
   {
     "key": "bolognese",
+    "id": "3BD4F7EE-4188-4513-931F-9A8D0FE69D64",
     "name": "番茄肉酱意面 · Spaghetti Bolognese",
     "description": "慢炖肉酱，简单可靠的家庭晚餐 · Slow-simmered, dependable family comfort food",
     "servings": 4,
@@ -111,6 +122,7 @@
   },
   {
     "key": "tikka-masala",
+    "id": "E93A22EE-710E-4A9A-AC18-397B2491C554",
     "name": "蒂卡玛莎拉鸡 · Chicken Tikka Masala",
     "description": "英国最熟悉的咖喱之一，浓郁温和 · One of Britain's favourite curries, rich and gently spiced",
     "servings": 4,
@@ -121,6 +133,7 @@
   },
   {
     "key": "roast-salmon",
+    "id": "E09545F2-B3C2-435B-8CF7-05698BA54764",
     "name": "烤三文鱼时蔬 · Roast Salmon and Vegetables",
     "description": "一盘完成、清爽省事的营养晚餐 · A fresh, nourishing one-tray dinner",
     "servings": 2,
@@ -131,6 +144,7 @@
   },
   {
     "key": "tomato-soup-toastie",
+    "id": "CF893E70-4000-43F5-A5A5-51FA3FBA2162",
     "name": "番茄汤配芝士吐司 · Tomato Soup and Cheese Toastie",
     "description": "雨天最舒服的一碗汤和酥脆吐司 · The cosiest rainy-day soup and toastie",
     "servings": 2,
@@ -141,6 +155,7 @@
   },
   {
     "key": "berry-porridge",
+    "id": "045FF4E6-4482-4D63-ACD2-068AA4CE9C31",
     "name": "莓果燕麦粥 · Berry Oat Porridge",
     "description": "五分钟的温暖早餐，英国超市食材都好买 · A five-minute warm breakfast with easy UK ingredients",
     "servings": 1,
@@ -151,6 +166,7 @@
   },
   {
     "key": "tray-roast-chicken",
+    "id": "A8B92645-78FA-45EF-A1E8-986ECF682ACE",
     "name": "一盘烤鸡 · One-pan Roast Chicken",
     "description": "鸡腿和根茎蔬菜一起烤，省心又有周日感 · Chicken and root veg with Sunday-roast comfort and weeknight ease",
     "servings": 4,

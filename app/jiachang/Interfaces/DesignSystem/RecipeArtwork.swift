@@ -1,5 +1,10 @@
 import SwiftUI
 
+enum RecipeImageSize {
+    case thumbnail
+    case original
+}
+
 struct RecipeArtwork: View {
     let recipe: RecipeSummary
     var size: RecipeImageSize = .thumbnail
@@ -8,27 +13,28 @@ struct RecipeArtwork: View {
     @Environment(RecipeLibrary.self) private var library
     @State private var imageData: Data?
 
+    // The photo is an overlay so a filled image never widens the container.
     var body: some View {
-        ZStack {
-            JiachangTheme.placeholder(for: recipe.name)
-            if let imageData, let image = UIImage(data: imageData) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .transition(.opacity)
-            } else if showsPlaceholder {
-                Image("LaunchMark")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: size == .original ? 150 : 96)
-                    .opacity(0.92)
-                    .shadow(color: .black.opacity(0.12), radius: 10, y: 5)
+        JiachangTheme.placeholder(for: recipe.name)
+            .overlay {
+                if let imageData, let image = UIImage(data: imageData) {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .transition(.opacity)
+                } else if showsPlaceholder {
+                    Image("LaunchMark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: size == .original ? 150 : 96)
+                        .opacity(0.92)
+                        .shadow(color: .black.opacity(0.12), radius: 10, y: 5)
+                }
             }
-        }
-        .clipped()
-        .task(id: "\(recipe.id)-\(recipe.imageToken ?? "")-\(size)") {
-            imageData = await library.imageData(for: recipe, size: size)
-        }
+            .clipped()
+            .task(id: recipe.imageToken ?? "") {
+                imageData = await library.imageData(for: recipe)
+            }
     }
 }
 
@@ -49,7 +55,7 @@ struct RecipeImageCard: View {
             )
             VStack(alignment: .leading, spacing: 7) {
                 Text(recipe.localizedName(language))
-                    .font(JiachangFont.display(24))
+                    .font(JiachangFont.emotional(24))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                 HStack(spacing: 8) {

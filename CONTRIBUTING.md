@@ -10,8 +10,9 @@ Thanks for helping improve Jiachang.
 4. Keep changes within the existing layers:
    - `Domain`: models and protocols only
    - `Application`: use cases and observable state
-   - `Adapters`: network and persistence implementations
+   - `Adapters`: bundled catalog and on-device storage
    - `Interfaces`: SwiftUI and localization
+5. Built-in recipes live in `app/jiachang/Resources/Catalog/`. Never change an existing recipe `id`; user edits and deletions are matched by it.
 
 ## Before a pull request
 

@@ -12,7 +12,7 @@ struct TonightCard: View {
                     RecipeArtwork(recipe: recipe, size: .original)
                 } else {
                     LinearGradient(
-                        colors: [Color(hex: 0xDF663C), Color(hex: 0xA83721)],
+                        colors: [Color(hex: 0xE9683B), .terracotta],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -36,7 +36,7 @@ struct TonightCard: View {
                     .tracking(1.6)
                     .foregroundStyle(.white.opacity(0.74))
                 Text(recipe?.localizedName(language) ?? copy(.warmKitchen, language))
-                    .font(JiachangFont.display(31))
+                    .font(JiachangFont.emotional(31))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                 Button(action: onShuffle) {

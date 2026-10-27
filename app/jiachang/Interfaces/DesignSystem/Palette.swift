@@ -1,11 +1,11 @@
 import SwiftUI
 
 extension Color {
+    // Warm kitchen paper: cream, ink, persimmon for actions, clay for small accents.
     static let cream = Color(hex: 0xFDF8F0)
     static let paper = Color(hex: 0xFFFDFC)
     static let persimmon = Color(hex: 0xD9542B)
     static let terracotta = Color(hex: 0xB23A20)
-    static let sage = Color(hex: 0x5F7F52)
     static let caramel = Color(hex: 0xE8A54B)
     static let ink = Color(hex: 0x2E2420)
     static let muted = Color(hex: 0x8A7A6E)

@@ -1,9 +1,9 @@
 import Foundation
 
-struct RecipeTag: Hashable, Identifiable {
-    let id: UUID
-    var name: String
-    var slug: String?
+enum RecipeOrigin: Hashable {
+    case builtIn
+    case editedBuiltIn
+    case personal
 }
 
 struct RecipeIngredient: Hashable, Identifiable {
@@ -31,13 +31,11 @@ struct RecipeInstruction: Hashable, Identifiable {
 struct RecipeSummary: Hashable, Identifiable {
     let id: UUID
     var name: String
-    var slug: String
     var description: String?
     var servings: Double?
     var totalMinutes: Int?
     var imageToken: String?
-    var categories: [RecipeTag]
-    var tags: [RecipeTag]
+    var origin: RecipeOrigin
 
     var hasImage: Bool { !(imageToken ?? "").isEmpty }
 }
@@ -45,27 +43,23 @@ struct RecipeSummary: Hashable, Identifiable {
 struct Recipe: Hashable, Identifiable {
     let id: UUID
     var name: String
-    var slug: String
     var description: String?
     var servings: Double?
     var totalMinutes: Int?
     var imageToken: String?
     var ingredients: [RecipeIngredient]
     var instructions: [RecipeInstruction]
-    var categories: [RecipeTag]
-    var tags: [RecipeTag]
+    var origin: RecipeOrigin
 
     var summary: RecipeSummary {
         RecipeSummary(
             id: id,
             name: name,
-            slug: slug,
             description: description,
             servings: servings,
             totalMinutes: totalMinutes,
             imageToken: imageToken,
-            categories: categories,
-            tags: tags
+            origin: origin
         )
     }
 }

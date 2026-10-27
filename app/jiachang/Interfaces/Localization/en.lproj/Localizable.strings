@@ -1,10 +1,5 @@
-"tab.today" = "Today";
+"tab.today" = "Journal";
 "tab.recipes" = "Recipes";
-"tagline" = "Keep the warmth, one dish at a time";
-"server" = "Server";
-"username" = "Username";
-"password" = "Password";
-"onboarding.enter" = "Enter the kitchen";
 "greeting.morning" = "Good morning";
 "greeting.noon" = "Good afternoon";
 "greeting.afternoon" = "Good afternoon";
@@ -23,6 +18,7 @@
 "recipe.ingredients" = "Ingredients";
 "recipe.ingredientsHint" = "Tap each ingredient as you prep";
 "recipe.steps" = "Method";
+"recipe.actions" = "Recipe actions";
 "recipe.edit" = "Edit recipe";
 "recipe.delete" = "Delete recipe";
 "recipe.deleteConfirm" = "Delete “%@”?";
@@ -32,6 +28,7 @@
 "editor.new" = "Add a recipe";
 "editor.edit" = "Edit recipe";
 "cancel" = "Cancel";
+"editor.finishEditing" = "Done typing";
 "editor.changePhoto" = "Change photo";
 "editor.aboutDish" = "About this dish";
 "editor.name" = "Recipe name";
@@ -42,10 +39,87 @@
 "editor.stepPlaceholder" = "What happens in this step?";
 "editor.saveNew" = "Save this recipe";
 "editor.saveEdit" = "Save changes";
-"settings" = "Settings";
+"photo.take" = "Take photo";
+"photo.library" = "Choose from library";
+"photo.denied" = "Camera access is not allowed. You can still choose a photo from your library.";
+"photo.unavailable" = "Camera is unavailable on this device. Choose a photo from your library.";
+"photo.settings" = "Open Settings";
+"photo.failed" = "Couldn't read the photo. Please try again.";
+"settings" = "About Jiachang";
+"settings.hint" = "Language, starter recipes, a note from the developer and app notices";
 "settings.privateCookbook" = "Your private cookbook";
-"account" = "Account";
-"reconnect" = "Reconnect";
-"about" = "About";
-"settings.backendNote" = "Jiachang v0.3 · Quietly powered by Mealie";
 "language" = "Language";
+"recipe.restoreOriginal" = "Restore original";
+"settings.starterRecipes" = "Starter recipes";
+"settings.restoreDeleted" = "Restore deleted starter recipes (%d)";
+"settings.restoreDeletedTitle" = "Restore deleted starter recipes?";
+"settings.restoreDeletedMessage" = "%d starter recipes will come back to your cookbook. Your own recipes are not affected.";
+"settings.restoreDeletedAction" = "Restore";
+"settings.storageNote" = "Jiachang v%@ · A little care in every meal";
+"settings.developerMessage" = "A note from the kitchen";
+"settings.developerMessageBody" = "Hello, and welcome to my kitchen.
+
+This is where I keep the meals I have cooked, and the warmth of ordinary days. I believe food carries more than flavour — it carries care.
+
+The times and servings in these recipes are only a reference. Adjust them as you like, and find your own taste along the way.
+
+May these dishes bring a little warmth to your table.
+
+— Brook";
+"about.privacy" = "Privacy";
+"about.privacy.local" = "Jiachang has no accounts or network backend, and no analytics or ads. Your recipes and photos are stored in the app's private space (its sandbox) on this iPhone.";
+"about.privacy.backup" = "This data may be included in system backups, depending on your settings. Deleting the app removes its local data; any backup copies are managed by the system.";
+"about.privacy.transfer" = "There is no cloud sync, no export, and nothing is moved to Mealie or any other service automatically.";
+"about.permissions" = "Permissions";
+"about.permissions.camera" = "Camera: asked for only when you choose to take a photo for a recipe.";
+"about.permissions.photos" = "Photos: picking a photo uses the system photo picker, so Jiachang only sees the photo you choose. Photos you take or pick are kept inside the app and are not saved to your photo library.";
+"about.foodSafety" = "Cooking safely";
+"about.foodSafety.body" = "Times and servings are a starting point; stoves, pans and appetites differ. Please check doneness yourself and watch for ingredients you or your guests are allergic to. Jiachang is not medical or nutritional advice.";
+"about.licenses" = "Content and licence";
+"about.licenses.starter" = "The photos of the starter recipes are AI-generated.";
+"about.licenses.software" = "Jiachang's source code is released under the MIT License. The full terms are in the project's LICENSE file; this software licence does not grant rights to all photos.";
+"about.licenses.userPhotos" = "Your own photos remain yours. Photos you add are separate from the starter images and do not become MIT-licensed by being added. Please only use photos you have the right to use.";
+"about.licenses.font" = "Type is set in open-source fonts: headings and notes in Jiachang Kai, based on LXGW WenKai (SIL Open Font License 1.1), and body text in Jiachang Hei, based on LXGW Neo XiHei (IPA Font License 1.0). Both licence texts ship with the app.";
+"problem.load" = "Couldn't load recipes. Pull down to try again.";
+"problem.save" = "Couldn't save. Please try again.";
+"problem.delete" = "Couldn't delete. Please try again.";
+"journal.greeting" = "Eat well. Live slowly.";
+"journal.tagline" = "Every familiar flavour has a story of its own.";
+"journal.empty" = "This journal is still empty";
+"journal.emptyHint" = "Open a recipe, cook it, then keep a page for that meal — it will live here.";
+"journal.browse" = "Browse the cookbook";
+"journal.history" = "Kitchen journal";
+"journal.date" = "When you cooked it";
+"journal.for" = "Cooked for (optional)";
+"journal.forPerson" = "Cooked for %@";
+"journal.note" = "What was different this time";
+"journal.noteHint" = "Seasoning, heat, a swapped ingredient, or how the meal felt";
+"journal.save" = "Keep this page";
+"journal.delete" = "Delete this page";
+"journal.deleteConfirm" = "Delete this journal page? The recipe itself is not affected.";
+"journal.deleteRecipeWarning" = "This also deletes its %d journal entries and their photos. Restoring the starter recipe will not restore these entries.";
+"season.spring" = "Spring kitchen";
+"season.summer" = "Summer kitchen";
+"season.autumn" = "Autumn kitchen";
+"season.winter" = "Winter kitchen";
+"cook.start" = "Start cooking";
+"cook.mode" = "Cooking mode";
+"cook.close" = "Close";
+"cook.done" = "Done";
+"cook.stepProgress" = "Step %d of %d";
+"cook.previous" = "Previous";
+"cook.next" = "Next";
+"cook.noSteps" = "No steps yet";
+"cook.noStepsMessage" = "This recipe has no instructions yet. You can still check the ingredients.";
+"cook.noIngredients" = "No ingredients listed";
+"cook.timer" = "Timer";
+"cook.timerMinutes" = "Timer: %d minutes";
+"cook.timerStart" = "Start timer";
+"cook.timerPause" = "Pause";
+"cook.timerResume" = "Resume timer";
+"cook.timerReset" = "Reset";
+"cook.timerCancel" = "Cancel timer";
+"cook.timerPaused" = "Paused. Tap Resume timer to continue.";
+"cook.timerFinished" = "Timer finished";
+"cook.timerPolicy" = "Timers pause when you leave the app and must be resumed manually. No system notifications are sent.";
+"cook.timerSourceStep" = "Timer for step %d";

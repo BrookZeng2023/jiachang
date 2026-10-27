@@ -5,6 +5,8 @@ struct LibraryView: View {
     @Environment(\.appLanguage) private var language
     @State private var query = ""
     @State private var showEditor = false
+    @State private var tonight: RecipeSummary?
+    @State private var openedTonight: RecipeSummary?
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -17,6 +19,11 @@ struct LibraryView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     header
                     searchField
+                    ProblemText(problem: library.problem)
+                    if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !library.recipes.isEmpty {
+                        TonightCard(recipe: tonight, onShuffle: shuffle)
+                            .onTapGesture { openedTonight = tonight }
+                    }
                     if library.recipes.isEmpty && !library.isLoading {
                         EmptyKitchenView { showEditor = true }
                             .frame(maxWidth: .infinity)
@@ -41,7 +48,17 @@ struct LibraryView: View {
             .overlay { if library.isLoading { ProgressView().controlSize(.large) } }
             .refreshable { await library.refresh() }
             .sheet(isPresented: $showEditor) { RecipeEditorView(recipe: nil) }
+            .navigationDestination(item: $openedTonight) { RecipeDetailView(summary: $0) }
+            .task { if tonight == nil { shuffle() } }
+            .onChange(of: library.recipes) { _, recipes in
+                tonight = recipes.first { $0.id == tonight?.id } ?? recipes.randomElement()
+            }
         }
+    }
+
+    private func shuffle() {
+        let choices = library.recipes.filter { $0.id != tonight?.id }
+        tonight = choices.randomElement() ?? library.recipes.first
     }
 
     private var header: some View {
@@ -52,7 +69,7 @@ struct LibraryView: View {
                     .tracking(1.2)
                     .foregroundStyle(Color.persimmon)
                 Text(copy(.cookbook, language))
-                    .font(JiachangFont.display(36))
+                    .font(JiachangFont.emotional(36))
                     .foregroundStyle(Color.ink)
             }
             Spacer()
@@ -90,10 +107,11 @@ struct LibraryView: View {
         ZStack(alignment: .bottomLeading) {
             RecipeArtwork(recipe: recipe)
                 .frame(height: 220)
+                .frame(maxWidth: .infinity)
             LinearGradient(colors: [.clear, .black.opacity(0.72)], startPoint: .center, endPoint: .bottom)
             VStack(alignment: .leading, spacing: 4) {
                 Text(recipe.localizedName(language))
-                    .font(JiachangFont.display(19, weight: .semibold))
+                    .font(JiachangFont.emotional(19))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                 if let servings = recipe.servings, servings > 0 {
